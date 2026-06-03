@@ -1,3 +1,5 @@
+@import url('brand.css');
+
 /*
  * Copyright 2020 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
@@ -44,17 +46,17 @@
   /* color scheme */
   color-scheme: light dark;
 
-  /* heritage palette */
-  --color-rust: #a14f2b;
-  --color-gold: #c5a059;
-  --color-parchment: #f5f2ed;
-  --color-ink: #1a1a1a;
+  /* AWS brand palette */
+  --color-aws-squid-ink: #232f3e;
+  --color-aws-orange: #f90;
+  --color-aws-smile: #ec7211;
+  --color-aws-ink: #16191f;
 
-  /* heritage dark palette */
-  --color-obsidian: #060d0d;
-  --color-card-dark: #162121;
-  --color-rust-bright: #d16a3e;
-  --color-muted: #8b9a9a;
+  /* AWS dark palette */
+  --color-obsidian: #16191f;
+  --color-card-dark: #232f3e;
+  --color-aws-blue: #0972d3;
+  --color-muted: #687078;
 
   /* color tokens – grays and palette */
   --color-gray-100: #f1f1f1;
@@ -106,21 +108,21 @@
   --color-yellow-300: #cab600;
 
   /* semantic / named colors */
-  --color-light: rgb(255 255 255);
-  --color-dark: rgb(0 0 0);
-  --color-text: light-dark(var(--color-ink), var(--color-parchment));
-  --color-link: light-dark(var(--color-ink), var(--color-parchment));
-  --color-link-hover: light-dark(var(--color-rust), var(--color-gold));
-  --color-brand: var(--color-rust);
-  --color-accent: var(--color-gold);
-  --color-shaded: light-dark(var(--color-parchment), var(--color-card-dark));
+  --color-light: #f2f3f3;
+  --color-dark: #232f3e;
+  --color-text: #333;
+  --color-link: #0972d3;
+  --color-link-hover: #033160;
+  --color-brand: #f90;
+  --color-accent: #ec7211;
+  --color-shaded: #f2f3f3;
 
   /* fonts */
-  --font-family: montserrat, "Trebuchet MS", sans-serif;
-  --font-family-serif: "EB Garamond", georgia, serif;
+  --font-family: "Amazon Ember", "Helvetica Neue", helvetica, arial, sans-serif;
+  --font-family-serif: "Amazon Ember", "Helvetica Neue", helvetica, arial, sans-serif;
   --font-family-mono: "JetBrains Mono", "Courier New", monospace;
   --body-font-family: var(--font-family);
-  --heading-font-family: var(--font-family-serif);
+  --heading-font-family: var(--font-family);
 
   /* heading sizes */
   --heading-font-size-xxl: 32.44px;
@@ -147,12 +149,12 @@
   --header-height: var(--nav-height);
 
   /* boilerplate compatibility – map to design tokens */
-  --background-color: light-dark(var(--color-parchment), var(--color-obsidian));
-  --light-color: var(--color-shaded);
-  --dark-color: var(--color-gray-500);
-  --text-color: var(--color-text);
-  --link-color: var(--color-link);
-  --link-hover-color: var(--color-link-hover);
+  --background-color: #fff;
+  --light-color: #f2f3f3;
+  --dark-color: #232f3e;
+  --text-color: #333;
+  --link-color: #0972d3;
+  --link-hover-color: #033160;
 
   /* heritage border */
   --border-heritage: 2px solid light-dark(rgb(161 79 43 / 20%), rgb(245 242 237 / 20%));

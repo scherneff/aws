@@ -1,0 +1,18 @@
+{
+  "status": "success",
+  "url": "https://aws.amazon.com/",
+  "path": "index",
+  "timestamp": "2026-06-03T17:31:26.036Z",
+  "title": "Cloud Computing Services - Amazon Web Services (AWS)",
+  "template": "homepage",
+  "blocks": [
+    "hero-gradient",
+    "cards-editorial",
+    "carousel-deluxe",
+    "tabs-compass",
+    "tabs-compass",
+    "cards-industry",
+    "embed-globe",
+    "embed-feedback"
+  ]
+}

@@ -1,0 +1,47 @@
+.embed-feedback-container .embed-feedback-wrapper {
+  background: var(--color-light);
+}
+
+.embed-feedback {
+  text-align: center;
+  padding: 40px 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.embed-feedback > div > div {
+  background: #fff;
+  border: 1px solid #e9ebed;
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.embed-feedback h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.embed-feedback p {
+  font-size: 14px;
+  color: var(--color-muted);
+  margin: 0 0 16px;
+}
+
+.embed-feedback a {
+  display: inline-block;
+  padding: 8px 20px;
+  border: 1px solid #e9ebed;
+  border-radius: 20px;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 8px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.embed-feedback a:hover {
+  background: var(--color-light);
+  border-color: var(--link-color);
+}

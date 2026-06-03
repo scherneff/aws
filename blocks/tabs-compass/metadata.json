@@ -1,0 +1,39 @@
+{
+  "variantName": "tabs-compass",
+  "baseBlock": "tabs",
+  "version": "1.0.0",
+  "created": "2026-06-03T16:30:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://aws.amazon.com/",
+    "originPage": "AWS homepage - Compass/filter sections",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "filter-compass",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "dropdown selector + filtered cards per selection",
+    "buttonCount": 2,
+    "imageCount": 2
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "interactive filter/dropdown-driven content",
+      "compass-style sentence completion interfaces",
+      "tabbed content with dynamic card results"
+    ],
+    "notSuitableFor": [
+      "simple horizontal tab bars",
+      "static content tabs without filtering",
+      "accordion-style expandable content"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-06-03T16:30:00.000Z"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "variantName": "carousel-deluxe",
+  "baseBlock": "carousel",
+  "version": "1.0.0",
+  "created": "2026-06-03T16:30:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://aws.amazon.com/",
+    "originPage": "AWS homepage - Customer Stories Carousel section",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "spacious",
+    "purpose": "story-carousel",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "5 slides x (background image + heading + CTA link)",
+    "buttonCount": 5,
+    "imageCount": 5
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "customer story carousels with full background images",
+      "hero-style sliding panels",
+      "large visual testimonials or case studies"
+    ],
+    "notSuitableFor": [
+      "simple image galleries without text overlay",
+      "small thumbnail carousels",
+      "text-only sliding content"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-06-03T16:30:00.000Z"
+  }
+}

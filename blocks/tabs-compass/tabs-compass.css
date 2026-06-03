@@ -1,0 +1,65 @@
+.tabs-compass {
+  padding: 40px 0;
+}
+
+.tabs-compass h1,
+.tabs-compass h3 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 32px;
+  color: var(--text-color);
+}
+
+.tabs-compass > div {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.tabs-compass > div > div:first-child {
+  font-size: 14px;
+  color: var(--color-muted);
+}
+
+.tabs-compass > div > div:last-child {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.tabs-compass > div > div:last-child h3 {
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.tabs-compass > div > div:last-child p {
+  font-size: 14px;
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.tabs-compass > div > div:last-child img {
+  width: 100%;
+  border-radius: 12px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: 8px 0;
+}
+
+.tabs-compass a {
+  color: var(--link-color);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tabs-compass a:hover {
+  text-decoration: underline;
+}
+
+@media (width >= 900px) {
+  .tabs-compass > div > div:last-child {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "variantName": "embed-globe",
+  "baseBlock": "embed",
+  "version": "1.0.0",
+  "created": "2026-06-03T16:30:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://aws.amazon.com/",
+    "originPage": "AWS homepage - Global Infrastructure section",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "spacious",
+    "purpose": "interactive-visualization",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "3D globe embed + regional tab navigation",
+    "buttonCount": 0,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "interactive 3D visualizations",
+      "map/globe embeds",
+      "complex WebGL or canvas-based content"
+    ],
+    "notSuitableFor": [
+      "simple video embeds",
+      "social media embeds",
+      "static image content"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-06-03T16:30:00.000Z"
+  }
+}

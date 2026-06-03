@@ -1,0 +1,39 @@
+{
+  "variantName": "embed-feedback",
+  "baseBlock": "embed",
+  "version": "1.0.0",
+  "created": "2026-06-03T16:30:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://aws.amazon.com/",
+    "originPage": "AWS homepage - Feedback section",
+    "blockPosition": "bottom"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "minimal",
+    "purpose": "feedback-widget",
+    "imagePattern": "noimg"
+  },
+  "contentPattern": {
+    "structure": "heading + subtitle + 2 interactive buttons (yes/no)",
+    "buttonCount": 2,
+    "imageCount": 0
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "page feedback widgets",
+      "thumbs up/down satisfaction surveys",
+      "simple interactive rating components"
+    ],
+    "notSuitableFor": [
+      "video or media embeds",
+      "complex form-based feedback",
+      "social media embeds"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-06-03T16:30:00.000Z"
+  }
+}

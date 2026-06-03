@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-industry",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-06-03T16:30:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://aws.amazon.com/",
+    "originPage": "AWS homepage - Powering Industries section",
+    "blockPosition": "middle"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "industry-cards",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "8+ items x (image + heading + description + link)",
+    "buttonCount": 0,
+    "imageCount": 8
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "industry/category card grids",
+      "searchable/filterable card collections",
+      "large sets of items with images and descriptions"
+    ],
+    "notSuitableFor": [
+      "small card sets (3 or fewer)",
+      "cards without images",
+      "editorial content with badges/tags"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-06-03T16:30:00.000Z"
+  }
+}

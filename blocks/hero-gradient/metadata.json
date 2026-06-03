@@ -1,0 +1,39 @@
+{
+  "variantName": "hero-gradient",
+  "baseBlock": "hero",
+  "version": "1.0.0",
+  "created": "2026-06-03T16:30:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://aws.amazon.com/",
+    "originPage": "AWS homepage",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "accent",
+    "density": "spacious",
+    "purpose": "homepage-hero",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "heading + paragraph + 1 CTA + image",
+    "buttonCount": 1,
+    "imageCount": 1
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "homepage hero sections",
+      "landing pages with colorful gradient backgrounds",
+      "pages with prominent heading and single CTA"
+    ],
+    "notSuitableFor": [
+      "simple text-only heroes",
+      "dark background heroes without gradient",
+      "multi-CTA hero sections"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-06-03T16:30:00.000Z"
+  }
+}

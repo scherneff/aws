@@ -1,0 +1,39 @@
+{
+  "variantName": "cards-editorial",
+  "baseBlock": "cards",
+  "version": "1.0.0",
+  "created": "2026-06-03T16:30:00.000Z",
+  "sourceContext": {
+    "originUrl": "https://aws.amazon.com/",
+    "originPage": "AWS homepage - What's New section",
+    "blockPosition": "top"
+  },
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "compact",
+    "purpose": "editorial-cards",
+    "imagePattern": "large"
+  },
+  "contentPattern": {
+    "structure": "3 items x (image + badge + heading + description + link)",
+    "buttonCount": 0,
+    "imageCount": 3
+  },
+  "reuseGuidance": {
+    "suitableFor": [
+      "news/blog card grids",
+      "editorial content with category badges",
+      "content with images, tags, and descriptions"
+    ],
+    "notSuitableFor": [
+      "product feature cards without images",
+      "simple icon-based card grids",
+      "large background-image cards"
+    ]
+  },
+  "usage": {
+    "pagesUsing": ["/index"],
+    "reuseCount": 1,
+    "lastUsed": "2026-06-03T16:30:00.000Z"
+  }
+}

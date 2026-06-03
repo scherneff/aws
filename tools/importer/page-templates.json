@@ -1,0 +1,123 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "homepage",
+      "urls": [
+        "https://aws.amazon.com/"
+      ],
+      "description": "AWS homepage with hero, service cards, promotional sections, and call-to-action areas",
+      "blocks": [
+        {
+          "name": "hero-gradient",
+          "instances": ["#hero"]
+        },
+        {
+          "name": "cards-editorial",
+          "instances": ["#amsinteractive-card-verticalpattern-data-180524338"]
+        },
+        {
+          "name": "carousel-deluxe",
+          "instances": ["#from-startups-to-enterprisesaws-is-how-leaders-have-powered-innovation-for-20-years"]
+        },
+        {
+          "name": "tabs-compass",
+          "instances": ["#compass-lite"]
+        },
+        {
+          "name": "cards-industry",
+          "instances": ["#amsinteractive-card-verticalpattern-data-590777913"]
+        },
+        {
+          "name": "embed-globe",
+          "instances": [".rgim_72884f5b"]
+        },
+        {
+          "name": "embed-feedback",
+          "instances": ["#did-you-find-what-you-were-looking-for-today"]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Hero",
+          "selector": "#hero",
+          "style": "accent",
+          "blocks": ["hero-gradient"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2",
+          "name": "What's New",
+          "selector": "#amsinteractive-card-verticalpattern-data-180524338",
+          "style": null,
+          "blocks": ["cards-editorial"],
+          "defaultContent": [
+            "#amsinteractive-card-verticalpattern-data-180524338 h2",
+            "#amsinteractive-card-verticalpattern-data-180524338 p.rgic_1671485e"
+          ]
+        },
+        {
+          "id": "section-3",
+          "name": "Customer Stories Carousel",
+          "selector": "#from-startups-to-enterprisesaws-is-how-leaders-have-powered-innovation-for-20-years",
+          "style": null,
+          "blocks": ["carousel-deluxe"],
+          "defaultContent": [
+            "#from-startups-to-enterprisesaws-is-how-leaders-have-powered-innovation-for-20-years h2",
+            "#from-startups-to-enterprisesaws-is-how-leaders-have-powered-innovation-for-20-years p"
+          ]
+        },
+        {
+          "id": "section-4",
+          "name": "Customer Stories Compass",
+          "selector": ["#compass-lite"],
+          "style": null,
+          "blocks": ["tabs-compass"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-5",
+          "name": "Powering Industries",
+          "selector": "#amsinteractive-card-verticalpattern-data-590777913",
+          "style": null,
+          "blocks": ["cards-industry"],
+          "defaultContent": [
+            "#amsinteractive-card-verticalpattern-data-590777913 h2",
+            "#amsinteractive-card-verticalpattern-data-590777913 p.rgic_1671485e",
+            "#amsinteractive-card-verticalpattern-data-590777913 a.rgic_2a7f98ee"
+          ]
+        },
+        {
+          "id": "section-6",
+          "name": "AWS Global Infrastructure",
+          "selector": ".rgim_72884f5b",
+          "style": null,
+          "blocks": ["embed-globe"],
+          "defaultContent": [
+            ".rgim_72884f5b h2",
+            ".rgim_72884f5b h5"
+          ]
+        },
+        {
+          "id": "section-7",
+          "name": "Try AWS Free Compass",
+          "selector": ["#compass-lite"],
+          "style": null,
+          "blocks": ["tabs-compass"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-8",
+          "name": "Feedback",
+          "selector": "#did-you-find-what-you-were-looking-for-today",
+          "style": "grey",
+          "blocks": ["embed-feedback"],
+          "defaultContent": []
+        }
+      ]
+    }
+  ]
+}
