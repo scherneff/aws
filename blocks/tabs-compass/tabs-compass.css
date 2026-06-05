@@ -1,65 +1,235 @@
-.tabs-compass {
-  padding: 40px 0;
+/* Block: tabs-compass
+   "I want to see customer stories in [category]" with filtered content cards.
+   Extracted from source: aws.amazon.com #compass-lite */
+
+/* --- Tab list (heading area) --- */
+.tabs-compass .tabs-compass-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 0 32px;
+  margin: 0;
 }
 
-.tabs-compass h1,
-.tabs-compass h3 {
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 0 0 32px;
-  color: var(--text-color);
+.tabs-compass .tabs-compass-tab {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 32px;
+  font-weight: 500;
+  font-family: var(--heading-font-family);
+  line-height: 40px;
+  color: var(--color-aws-ink);
+  cursor: pointer;
+  border-bottom: 2px solid var(--color-aws-ink);
+  padding-bottom: 2px;
 }
 
-.tabs-compass > div {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
+.tabs-compass .tabs-compass-tab p {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
 }
 
-.tabs-compass > div > div:first-child {
-  font-size: 14px;
+.tabs-compass .tabs-compass-tab[aria-selected="true"] {
+  color: var(--color-aws-ink);
+  border-bottom-color: var(--color-aws-ink);
+}
+
+.tabs-compass .tabs-compass-tab[aria-selected="false"] {
   color: var(--color-muted);
+  border-bottom-color: transparent;
 }
 
-.tabs-compass > div > div:last-child {
+.tabs-compass .tabs-compass-tab:hover {
+  color: var(--color-aws-ink);
+  border-bottom-color: var(--color-aws-ink);
+}
+
+/* --- Tab panel (cards area) --- */
+.tabs-compass .tabs-compass-panel {
+  padding: 0;
+}
+
+.tabs-compass .tabs-compass-panel[aria-hidden="true"] {
+  display: none;
+}
+
+.tabs-compass .tabs-compass-panel[aria-hidden="false"] {
+  display: block;
+}
+
+/* The cell div inside each panel holds card containers */
+.tabs-compass .tabs-compass-panel > div {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 32px;
 }
 
-.tabs-compass > div > div:last-child h3 {
+/* --- Card container --- */
+.tabs-compass .tabs-compass-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto auto;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #f3f3f7;
+}
+
+/* Card heading */
+.tabs-compass .tabs-compass-card h3 {
   font-size: 18px;
-  margin: 0 0 8px;
+  font-weight: 500;
+  font-family: var(--heading-font-family);
+  line-height: 24px;
+  color: var(--color-aws-ink);
+  margin: 0;
+  padding: 16px 24px 0;
+  grid-row: 2;
+  grid-column: 1;
 }
 
-.tabs-compass > div > div:last-child p {
-  font-size: 14px;
-  color: var(--color-muted);
-  line-height: 1.5;
-  margin: 0 0 12px;
+/* Image paragraph */
+.tabs-compass .tabs-compass-card p:has(picture) {
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  grid-row: 1;
+  grid-column: 1;
 }
 
-.tabs-compass > div > div:last-child img {
+.tabs-compass .tabs-compass-card img {
   width: 100%;
-  border-radius: 12px;
-  aspect-ratio: 16 / 9;
+  height: 200px;
   object-fit: cover;
-  margin: 8px 0;
+  display: block;
 }
 
-.tabs-compass a {
-  color: var(--link-color);
-  font-weight: 700;
+/* Description paragraph */
+.tabs-compass .tabs-compass-card p:not(.button-container, :has(picture)) {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: rgb(35 43 55);
+  margin: 0;
+  padding: 8px 24px 0;
+  grid-row: 3;
+  grid-column: 1;
+}
+
+/* Button/link area */
+.tabs-compass .tabs-compass-card p.button-container {
+  margin: 0;
+  padding: 16px 24px 24px;
+  grid-row: 4;
+  grid-column: 1;
+  align-self: end;
+}
+
+/* Reset button styling to plain link with arrow */
+.tabs-compass .tabs-compass-card a.button:any-link {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--color-aws-ink);
+  cursor: pointer;
   text-decoration: none;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  text-transform: none;
+  letter-spacing: normal;
+  line-height: 1.4;
 }
 
-.tabs-compass a:hover {
+.tabs-compass .tabs-compass-card a.button:any-link::after {
+  content: "\2192";
+  font-size: 16px;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.tabs-compass .tabs-compass-card a.button:any-link:hover {
   text-decoration: underline;
+  background: none;
+  border: none;
+  box-shadow: none;
+  transform: none;
+  color: var(--color-aws-ink);
 }
 
+.tabs-compass .tabs-compass-card a.button:any-link:hover::after {
+  transform: translateX(4px);
+}
+
+/* --- Desktop layout (2 columns, horizontal cards) --- */
 @media (width >= 900px) {
-  .tabs-compass > div > div:last-child {
+  .tabs-compass .tabs-compass-panel > div {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Cards with images: horizontal layout (image left, text right) */
+  .tabs-compass .tabs-compass-card:has(picture) {
+    grid-template-columns: 168px 1fr;
+    grid-template-rows: auto 1fr auto;
+    min-height: 252px;
+  }
+
+  /* Image takes left column, spans all rows */
+  .tabs-compass .tabs-compass-card p:has(picture) {
+    grid-row: 1 / -1;
+    grid-column: 1;
+    height: 100%;
+  }
+
+  .tabs-compass .tabs-compass-card:has(picture) img {
+    width: 168px;
+    height: 100%;
+    min-height: 252px;
+    object-fit: cover;
+  }
+
+  /* Text content in right column (when image present) */
+  .tabs-compass .tabs-compass-card:has(picture) h3 {
+    grid-row: 1;
+    grid-column: 2;
+    padding: 24px 24px 0;
+  }
+
+  .tabs-compass .tabs-compass-card:has(picture) p:not(.button-container, :has(picture)) {
+    grid-row: 2;
+    grid-column: 2;
+    padding: 8px 24px 0;
+  }
+
+  .tabs-compass .tabs-compass-card:has(picture) p.button-container {
+    grid-row: 3;
+    grid-column: 2;
+    padding: 16px 24px 24px;
+  }
+
+  /* Cards without images: single column, text only */
+  .tabs-compass .tabs-compass-card:not(:has(picture)) {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .tabs-compass .tabs-compass-card:not(:has(picture)) h3 {
+    padding: 24px 24px 0;
+  }
+
+  .tabs-compass .tabs-compass-card:not(:has(picture)) p:not(.button-container) {
+    padding: 8px 24px 0;
+  }
+
+  .tabs-compass .tabs-compass-card:not(:has(picture)) p.button-container {
+    padding: 16px 24px 24px;
   }
 }

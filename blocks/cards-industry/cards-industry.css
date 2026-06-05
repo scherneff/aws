@@ -1,26 +1,28 @@
+/* Block: cards-industry
+   Vertical industry cards in a responsive grid.
+   Source: AWS homepage "Powering Industries" section. */
+
 .cards-industry > ul {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16px;
+  gap: 32px;
 }
 
 .cards-industry > ul > li {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 16px;
-  align-items: center;
-  padding: 16px;
-  border: 1px solid #e9ebed;
-  border-radius: 12px;
-  transition: box-shadow 0.2s, border-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(243 243 247);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .cards-industry > ul > li:hover {
-  border-color: var(--link-color, #0972d3);
-  box-shadow: 0 2px 12px rgb(0 0 0 / 8%);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
+  transform: translateY(-2px);
 }
 
 .cards-industry .cards-industry-card-image {
@@ -28,34 +30,123 @@
 }
 
 .cards-industry .cards-industry-card-image img {
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
+.cards-industry .cards-industry-card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 16px;
+  flex-grow: 1;
 }
 
 .cards-industry .cards-industry-card-body h4 {
-  font-size: 16px;
-  font-weight: 700;
-  margin: 0 0 4px;
-  color: var(--text-color, #333);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.33;
+  margin: 0;
+  color: rgb(22 29 38);
 }
 
 .cards-industry .cards-industry-card-body p {
   font-size: 14px;
-  color: var(--color-muted, #687078);
-  line-height: 1.4;
-  margin: 0 0 8px;
+  font-weight: 400;
+  line-height: 1.43;
+  color: rgb(35 43 55);
+  margin: 0;
+}
+
+.cards-industry .cards-industry-card-body p:last-child {
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 .cards-industry .cards-industry-card-body a {
-  color: var(--link-color, #0972d3);
+  color: var(--color-link, #0972d3);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 400;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cards-industry .cards-industry-card-body a::after {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: currentcolor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M2 8h12M9 3l5 5-5 5' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  transition: transform 0.2s ease;
+}
+
+.cards-industry > ul > li:hover .cards-industry-card-body a::after {
+  transform: translateX(4px);
 }
 
 .cards-industry .cards-industry-card-body a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+}
+
+/* Reset EDS button styles on links inside cards */
+main .cards-industry p.button-container {
+  margin: 0;
+}
+
+main .cards-industry a.button:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  color: var(--color-link, #0972d3);
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  white-space: normal;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+main .cards-industry a.button:any-link:hover {
+  background: none;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  transform: none;
+  color: var(--color-link, #0972d3);
+  text-decoration: none;
+}
+
+main .cards-industry a.button:any-link::after {
+  content: "";
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-color: currentcolor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M2 8h12M9 3l5 5-5 5' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  transition: transform 0.2s ease;
+  position: static;
+  inset: auto;
+  background-image: none;
+  transform: none;
+}
+
+main .cards-industry a.button:any-link:hover::after {
+  transform: translateX(4px);
 }
 
 @media (width >= 600px) {
@@ -64,8 +155,8 @@
   }
 }
 
-@media (width >= 1200px) {
+@media (width >= 900px) {
   .cards-industry > ul {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }

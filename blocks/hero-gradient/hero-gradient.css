@@ -1,25 +1,26 @@
+/* Block: hero-gradient
+   Full-width hero with background image and overlaid text content.
+   Extracted values from aws.amazon.com #hero computed styles. */
+
+/* Full-width wrapper override */
 .hero-gradient-container .hero-gradient-wrapper {
   max-width: unset;
   padding: 0;
 }
 
+/* Block container */
 .hero-gradient {
   position: relative;
-  display: flex;
-  flex-direction: column-reverse;
-  padding: 40px 24px;
-  min-height: 350px;
-  background: linear-gradient(135deg, #1a1a2e 0%, #232f3e 30%, #0d324d 60%, #1a1a2e 100%);
+  background-color: rgb(222 222 227);
   overflow: hidden;
+  min-height: 350px;
 }
 
+/* Row 1: Image — absolute, covers entire block */
 .hero-gradient > div:first-child {
   position: absolute;
-  right: 0;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  opacity: 0.8;
+  inset: 0;
+  z-index: 0;
 }
 
 .hero-gradient > div:first-child picture,
@@ -29,71 +30,103 @@
   object-fit: cover;
 }
 
+/* Row 2: Text content — overlaid on the image */
 .hero-gradient > div:last-child {
   position: relative;
   z-index: 1;
-  max-width: 560px;
+  padding: 40px 24px 80px;
 }
 
+/* Inner content cell — constrained width */
+.hero-gradient > div:last-child > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 504px;
+}
+
+/* Heading */
 .hero-gradient h1 {
-  color: #fff;
   font-size: 28px;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0 0 16px;
+  font-weight: 500;
+  font-family: var(--font-family);
+  line-height: 1.1;
+  color: rgb(22 29 38);
+  margin: 0;
 }
 
+/* Description paragraph */
 .hero-gradient p {
-  color: rgb(255 255 255 / 85%);
   font-size: 16px;
-  line-height: 1.6;
-  margin: 0 0 24px;
+  line-height: 28px;
+  color: rgb(35 43 55);
+  margin: 0;
 }
 
-.hero-gradient .button-container {
-  display: block;
+/* Button container spacing */
+.hero-gradient p.button-container {
+  margin-top: 24px;
 }
 
-.hero-gradient a.button {
-  display: inline-block;
-  background: var(--color-aws-orange, #f90);
-  color: #16191f;
-  padding: 10px 24px;
-  border-radius: 20px;
-  font-weight: 700;
+/* CTA button — pill-shaped, dark bg with blue text */
+main .hero-gradient a.button:any-link {
+  background-color: var(--color-aws-ink);
+  background-image: none;
+  color: var(--color-aws-blue);
+  padding: 10px 26px;
+  border-radius: 40px;
+  border: 0;
   font-size: 14px;
+  font-weight: 400;
+  line-height: 22.4px;
+  letter-spacing: normal;
+  text-transform: none;
   text-decoration: none;
-  transition: background 0.2s;
+  box-shadow: none;
+  transition: background-color 0.2s, transform 0.2s;
 }
 
-.hero-gradient a.button:hover {
-  background: var(--color-aws-smile, #ec7211);
+main .hero-gradient a.button:any-link::after {
+  display: none;
 }
 
+main .hero-gradient a.button:any-link:hover,
+main .hero-gradient a.button:any-link:focus-visible {
+  background-color: var(--color-aws-blue);
+  color: #fff;
+  border-color: var(--color-aws-blue);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Desktop layout */
 @media (width >= 900px) {
   .hero-gradient {
-    flex-direction: row;
-    align-items: center;
-    padding: 80px 64px;
-    min-height: 450px;
+    min-height: 525px;
   }
 
   .hero-gradient > div:last-child {
-    flex: 1;
-  }
-
-  .hero-gradient > div:first-child {
-    position: relative;
-    flex: 1;
-    width: auto;
-    height: auto;
+    padding: 104px 0 125px 160px;
   }
 
   .hero-gradient h1 {
-    font-size: 42px;
+    font-size: 40px;
+    line-height: 44px;
   }
 
   .hero-gradient p {
-    font-size: 18px;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .hero-gradient p.button-container {
+    margin-top: 32px;
+  }
+}
+
+/* Wide screens: constrain left offset proportionally */
+@media (width >= 1200px) {
+  .hero-gradient > div:last-child {
+    padding-left: 11.1%; /* ~160px at 1440px viewport */
   }
 }

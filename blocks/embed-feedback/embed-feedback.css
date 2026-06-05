@@ -1,47 +1,151 @@
-.embed-feedback-container .embed-feedback-wrapper {
-  background: var(--color-light);
+/* Embed Feedback Block
+ * "Did you find what you were looking for?" feedback widget
+ * Extracted from: https://aws.amazon.com/ #did-you-find-what-you-were-looking-for-today
+ */
+
+/* Section wrapper: full-width gradient card */
+.embed-feedback-container {
+  background: transparent;
+}
+
+.embed-feedback-wrapper {
+  max-width: 1200px !important;
+  padding: 0 !important;
 }
 
 .embed-feedback {
-  text-align: center;
-  padding: 40px 24px;
-  max-width: 600px;
+  background-image: linear-gradient(96deg, rgb(143 255 206) 28.41%, rgb(153 247 255) 69.04%);
+  border-radius: 8px;
+  padding: 56px 40px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-.embed-feedback > div > div {
-  background: #fff;
-  border: 1px solid #e9ebed;
-  border-radius: 16px;
-  padding: 32px;
+/* Content layout: stacked on mobile */
+.embed-feedback .embed-feedback-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Text column */
+.embed-feedback .embed-feedback-text {
+  display: block;
 }
 
 .embed-feedback h2 {
   font-size: 20px;
-  font-weight: 700;
-  margin: 0 0 8px;
+  font-weight: 500;
+  font-family: var(--body-font-family);
+  color: rgb(22 29 38);
+  margin: 0;
+  line-height: 28px;
+  letter-spacing: normal;
 }
 
 .embed-feedback p {
-  font-size: 14px;
-  color: var(--color-muted);
-  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgb(35 43 55);
+  margin: 16px 0 0;
+  line-height: 24px;
 }
 
-.embed-feedback a {
-  display: inline-block;
-  padding: 8px 20px;
-  border: 1px solid #e9ebed;
-  border-radius: 20px;
-  color: var(--text-color);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  margin: 0 8px;
-  transition: background 0.2s, border-color 0.2s;
+/* Buttons column */
+.embed-feedback .embed-feedback-buttons {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 16px;
 }
 
-.embed-feedback a:hover {
-  background: var(--color-light);
-  border-color: var(--link-color);
+.embed-feedback button {
+  background-color: rgb(22 29 38);
+  border: 0;
+  border-radius: 40px;
+  padding: 10px 26px;
+  height: 44px;
+  min-width: 120px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: none;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.embed-feedback button:hover {
+  background-color: rgb(35 47 62);
+  transform: translateY(-1px);
+}
+
+.embed-feedback button:focus-visible {
+  outline: 2px solid var(--color-aws-blue);
+  outline-offset: 2px;
+}
+
+.embed-feedback button .embed-feedback-btn-label {
+  color: rgb(255 255 255);
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--body-font-family);
+}
+
+.embed-feedback button svg {
+  width: 16px;
+  height: 15px;
+  color: rgb(255 255 255);
+}
+
+/* Thank you state */
+.embed-feedback.embed-feedback-submitted {
+  text-align: center;
+}
+
+.embed-feedback .embed-feedback-thanks {
+  padding: 20px 0;
+}
+
+.embed-feedback .embed-feedback-thanks h2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: rgb(22 29 38);
+}
+
+.embed-feedback .embed-feedback-thanks p {
+  font-size: 16px;
+  color: rgb(35 43 55);
+}
+
+/* Desktop: side-by-side grid layout */
+@media (width >= 900px) {
+  .embed-feedback {
+    padding: 56px 80px;
+  }
+
+  .embed-feedback .embed-feedback-content {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px 64px;
+    align-items: center;
+  }
+
+  .embed-feedback button {
+    width: 200px;
+  }
+
+  .embed-feedback .embed-feedback-buttons {
+    justify-content: flex-end;
+  }
+}
+
+@media (width >= 1200px) {
+  .embed-feedback {
+    padding: 56px 120px;
+  }
+
+  .embed-feedback button {
+    width: 256px;
+  }
 }

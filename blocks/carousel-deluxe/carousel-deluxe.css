@@ -1,3 +1,21 @@
+/* carousel-deluxe: Full-width customer story carousel with background images,
+   white text overlay, category badges, navigation arrows, and dot indicators.
+   Based on computed styles extracted from aws.amazon.com homepage. */
+
+/* === Full-width wrapper override === */
+.carousel-deluxe-wrapper {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* === Carousel container === */
+.carousel-deluxe {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+}
+
+/* === Slides scroll container === */
 .carousel-deluxe .carousel-deluxe-slides-container {
   position: relative;
 }
@@ -20,6 +38,7 @@
   display: none;
 }
 
+/* === Individual slide === */
 .carousel-deluxe .carousel-deluxe-slide {
   flex: 0 0 100%;
   scroll-snap-align: start;
@@ -29,15 +48,16 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  min-height: min(50vw, calc(100dvh - var(--header-height)));
+  height: 400px;
+  overflow: hidden;
 }
 
-.carousel-deluxe .carousel-deluxe-slide:has(.carousel-deluxe-slide-content[data-align='center']) {
-  align-items: center;
-}
-
-.carousel-deluxe .carousel-deluxe-slide:has(.carousel-deluxe-slide-content[data-align='right']) {
-  align-items: flex-end;
+/* === Slide image (background cover) === */
+.carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 0;
 }
 
 .carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-image picture {
@@ -51,42 +71,181 @@
   object-fit: cover;
 }
 
-.carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-content {
-  z-index: 1;
-  margin: 68px;
-  padding: 16px;
-  color: white;
-  background-color: rgb(19 19 19 / 75%);
-  position: relative;
-  width: var(--slide-content-width, auto);
+/* Dark gradient overlay for text readability */
+.carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgb(0 0 0 / 60%) 0%,
+    rgb(0 0 0 / 20%) 50%,
+    rgb(0 0 0 / 10%) 100%
+  );
+  pointer-events: none;
 }
 
+/* === Slide content overlay === */
+.carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  padding: 40px 24px;
+  color: #fff;
+  background-color: transparent;
+}
+
+/* Group logo + heading + CTA at the bottom */
+.carousel-deluxe .carousel-deluxe-slide-content > p:nth-child(2),
+.carousel-deluxe .carousel-deluxe-slide-content > h2,
+.carousel-deluxe .carousel-deluxe-slide-content > p.button-container {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.carousel-deluxe .carousel-deluxe-slide-content > p:nth-child(2) {
+  margin: 0;
+  margin-top: auto;
+}
+
+/* === Category badge (first p) === */
+.carousel-deluxe .carousel-deluxe-slide-content > p:first-child {
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 8px;
+  margin: 0;
+  background-color: rgb(15 20 26 / 75%);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+/* === AWS 20th anniversary logo (second p with picture) === */
+.carousel-deluxe .carousel-deluxe-slide-content > p:nth-child(2) picture {
+  display: block;
+}
+
+.carousel-deluxe .carousel-deluxe-slide-content > p:nth-child(2) img {
+  max-width: 130px;
+  height: auto;
+  display: block;
+}
+
+/* === Slide heading (h2) === */
+.carousel-deluxe .carousel-deluxe-slide-content h2 {
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: normal;
+  margin: 0;
+  max-width: 100%;
+}
+
+/* === CTA link (button-container) === */
+.carousel-deluxe .carousel-deluxe-slide-content p.button-container {
+  margin: 0;
+}
+
+/* Reset EDS button styles for this block - source shows plain link with arrow */
+.carousel-deluxe .carousel-deluxe-slide-content a.button:any-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-transform: none;
+  letter-spacing: normal;
+  text-decoration: none;
+  box-shadow: none;
+  transform: none;
+  white-space: normal;
+}
+
+.carousel-deluxe .carousel-deluxe-slide-content a.button:any-link::after {
+  content: '\2192';
+  display: inline-block;
+  font-size: 16px;
+  transform: none;
+  position: static;
+  border: none;
+  width: auto;
+  height: auto;
+  top: auto;
+  left: auto;
+  background: none;
+  transition: transform 0.2s ease;
+}
+
+.carousel-deluxe .carousel-deluxe-slide-content a.button:any-link:hover::after {
+  transform: translateX(4px);
+}
+
+.carousel-deluxe .carousel-deluxe-slide-content a.button:any-link:hover,
+.carousel-deluxe .carousel-deluxe-slide-content a.button:any-link:focus-visible {
+  background: none;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  transform: none;
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* === Navigation pill (below slides) === */
 .carousel-deluxe .carousel-deluxe-slide-indicators {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 6px 12px;
-  padding: 12px;
-  background-color: var(--light-color);
+  gap: 0;
+  margin: 16px auto 0;
+  padding: 0;
+  background-color: rgb(27 35 45);
+  border-radius: 40px;
+  width: fit-content;
+  height: 44px;
   line-height: 0;
 }
 
+.carousel-deluxe .carousel-deluxe-slide-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
 .carousel-deluxe .carousel-deluxe-slide-indicator button {
-  width: 24px;
-  height: 24px;
-  margin: 0;
+  width: 10px;
+  height: 10px;
+  margin: 0 4px;
   padding: 0;
   border-radius: 50%;
-  background-color: #dadada;
+  border: none;
+  background-color: rgb(255 255 255 / 40%);
+  cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .carousel-deluxe .carousel-deluxe-slide-indicator button:disabled,
 .carousel-deluxe .carousel-deluxe-slide-indicator button:hover,
 .carousel-deluxe .carousel-deluxe-slide-indicator button:focus-visible {
-  background-color: var(--text-color);
+  background-color: #fff;
 }
 
+/* === Navigation arrows (left/right of slides) === */
 .carousel-deluxe .carousel-deluxe-navigation-buttons {
   position: absolute;
   top: 50%;
@@ -96,7 +255,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 1;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -106,24 +266,27 @@
   height: 44px;
   margin: 0;
   border-radius: 50%;
+  border: none;
   padding: 0;
-  background-color: rgb(19 19 19 / 25%);
+  background-color: rgb(27 35 45 / 70%);
+  cursor: pointer;
+  pointer-events: auto;
   transition: background-color 0.2s;
 }
 
 .carousel-deluxe .carousel-deluxe-navigation-buttons button:hover,
 .carousel-deluxe .carousel-deluxe-navigation-buttons button:focus-visible {
-  background-color: rgb(19 19 19 / 75%);
+  background-color: rgb(27 35 45);
 }
 
 .carousel-deluxe .carousel-deluxe-navigation-buttons button::after {
   display: block;
   content: '';
-  border: 2px solid;
+  border: 2px solid #fff;
   border-bottom: 0;
   border-left: 0;
-  height: 12px;
-  width: 12px;
+  height: 10px;
+  width: 10px;
   position: absolute;
   top: 50%;
   left: calc(50% + 2px);
@@ -135,19 +298,33 @@
   left: calc(50% - 2px);
 }
 
-@media (width >= 600px) {
-  .carousel-deluxe .carousel-deluxe-navigation-buttons {
-    left: 24px;
-    right: 24px;
+/* === Desktop styles === */
+@media (width >= 900px) {
+  .carousel-deluxe .carousel-deluxe-slide {
+    height: 640px;
+    padding: 0 16px;
+  }
+
+  .carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-image {
+    border-radius: 24px;
   }
 
   .carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-content {
-    --slide-content-width: calc((100% - 184px) / 2);
-
-    margin: 92px;
+    padding: 72px;
+    max-width: 60%;
   }
 
-  .carousel-deluxe .carousel-deluxe-slide .carousel-deluxe-slide-content[data-align='justify'] {
-    --slide-content-width: auto;
+  .carousel-deluxe .carousel-deluxe-slide-content h2 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .carousel-deluxe .carousel-deluxe-slide-content > p:nth-child(2) img {
+    max-width: 200px;
+  }
+
+  .carousel-deluxe .carousel-deluxe-navigation-buttons {
+    left: 24px;
+    right: 24px;
   }
 }

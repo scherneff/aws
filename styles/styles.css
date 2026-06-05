@@ -264,7 +264,7 @@ html {
 }
 
 ::selection {
-  background: light-dark(rgb(161 79 43 / 20%), rgb(197 160 89 / 30%));
+  background: rgb(9 114 211 / 20%);
   color: inherit;
 }
 
@@ -273,11 +273,6 @@ body {
   margin: 0;
   box-sizing: border-box;
   background-color: var(--background-color);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 12% 8%,
-      light-dark(rgb(197 160 89 / 9%), rgb(197 160 89 / 4%)) 0%, transparent 60%),
-    radial-gradient(ellipse 55% 40% at 88% 82%,
-      light-dark(rgb(161 79 43 / 6%), rgb(161 79 43 / 3%)) 0%, transparent 50%);
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
@@ -579,7 +574,7 @@ main img:not([width], [height]) {
 /* sections – boilerplate structure with design tokens */
 :is(main, article.article-body) > .section {
   margin: inherit;
-  padding-block: var(--space-xl);
+  padding-block: 0;
 }
 
 main > .section:first-child {
@@ -597,9 +592,9 @@ main > .section:has(.social-share) {
 
 main > .section > div,
 article.article-body > .section > div {
-  max-width: var(--grid-container-width);
-  margin: auto;
-  padding: 0 var(--content-padding-inline);
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 /* section metadata */

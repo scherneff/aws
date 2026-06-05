@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
-
 // keep track globally of the number of tab blocks on the page
 let tabBlockCnt = 0;
 
@@ -57,8 +55,33 @@ export default async function decorate(block) {
 
     // remove the instrumentation from the button's h1, h2 etc (this removes it from the tree)
     if (button.firstElementChild) {
+      button.firstElementChild.removeAttribute('data-aue-resource');
     }
   });
 
   block.prepend(tablist);
+
+  // Group card content into individual card containers
+  // Each card pattern: h3 + p(image) + p(description) + p.button-container
+  block.querySelectorAll('.tabs-compass-panel > div').forEach((cell) => {
+    const children = [...cell.children];
+    const cards = [];
+    let currentCard = null;
+
+    children.forEach((el) => {
+      if (el.tagName === 'H3') {
+        // Start a new card
+        currentCard = document.createElement('div');
+        currentCard.className = 'tabs-compass-card';
+        cards.push(currentCard);
+        currentCard.append(el);
+      } else if (currentCard) {
+        currentCard.append(el);
+      }
+    });
+
+    // Replace cell content with card containers
+    cell.innerHTML = '';
+    cards.forEach((card) => cell.append(card));
+  });
 }
