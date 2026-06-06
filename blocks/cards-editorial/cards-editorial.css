@@ -3,6 +3,21 @@
  * 3-up vertical cards with image, badge, heading, description, and CTA link
  */
 
+.cards-editorial-container {
+  padding-block: 40px;
+  padding-inline: var(--content-padding-inline);
+  max-width: 1440px;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+@media (width >= 900px) {
+  .cards-editorial-container {
+    padding-block: 60px;
+    padding-inline: 120px;
+  }
+}
+
 .cards-editorial > ul {
   list-style: none;
   margin: 0;

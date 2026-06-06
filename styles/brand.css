@@ -21,4 +21,12 @@
   --border-radius: 16px;
   --card-border-radius: 16px;
   --button-border-radius: 20px;
+
+  /* Heritage token aliases mapped to AWS brand values.
+     These satisfy references in styles.css that pre-date the AWS port. */
+  --color-rust: #ec7211;
+  --color-rust-bright: #f90;
+  --color-gold: #f90;
+  --color-parchment: #fff;
+  --color-ink: #16191f;
 }

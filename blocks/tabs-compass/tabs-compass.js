@@ -1,87 +1,177 @@
-// keep track globally of the number of tab blocks on the page
 let tabBlockCnt = 0;
 
-export default async function decorate(block) {
-  // build tablist
-  const tablist = document.createElement('div');
-  tablist.className = 'tabs-compass-list';
-  tablist.setAttribute('role', 'tablist');
-  tablist.id = `tablist-${tabBlockCnt += 1}`;
+const CHEVRON_SVG = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M8.00004 12.5C7.74004 12.5 7.49004 12.4 7.29004 12.21L0.290039 5.21005L1.70004 3.80005L7.99004 10.09L14.28 3.80005L15.69 5.21005L8.69004 12.21C8.49004 12.41 8.24004 12.5 7.98004 12.5H8.00004Z"/></svg>';
 
-  // the first cell of each row is the title of the tab
-  const tabHeadings = [...block.children]
-    .filter((child) => child.firstElementChild && child.firstElementChild.children.length > 0)
-    .map((child) => child.firstElementChild);
+function groupCards(cell) {
+  const children = [...cell.children];
+  const cards = [];
+  let currentCard = null;
+  children.forEach((el) => {
+    if (el.tagName === 'H3') {
+      currentCard = document.createElement('div');
+      currentCard.className = 'tabs-compass-card';
+      cards.push(currentCard);
+    }
+    if (currentCard) currentCard.append(el);
+  });
+  cell.innerHTML = '';
+  cards.forEach((card) => cell.append(card));
+}
 
-  tabHeadings.forEach((tab, i) => {
-    const id = `tabpanel-${tabBlockCnt}-tab-${i + 1}`;
+function buildDropdown(block, labels, panels) {
+  const heading = document.createElement('p');
+  heading.className = 'tabs-compass-heading';
 
-    // decorate tabpanel
-    const tabpanel = block.children[i];
-    tabpanel.className = 'tabs-compass-panel';
-    tabpanel.id = id;
-    tabpanel.setAttribute('aria-hidden', !!i);
-    tabpanel.setAttribute('aria-labelledby', `tab-${id}`);
-    tabpanel.setAttribute('role', 'tabpanel');
+  const prefix = document.createElement('span');
+  prefix.className = 'tabs-compass-prefix';
+  prefix.textContent = 'I want to see new customer stories in ';
 
-    // build tab button
-    const button = document.createElement('button');
-    button.className = 'tabs-compass-tab';
-    button.id = `tab-${id}`;
+  const triggerWrapper = document.createElement('span');
+  triggerWrapper.className = 'tabs-compass-trigger-wrapper';
 
-    button.innerHTML = tab.innerHTML;
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'tabs-compass-trigger';
+  trigger.setAttribute('aria-haspopup', 'listbox');
+  trigger.setAttribute('aria-expanded', 'false');
 
-    button.setAttribute('aria-controls', id);
-    button.setAttribute('aria-selected', !i);
-    button.setAttribute('role', 'tab');
-    button.setAttribute('type', 'button');
+  const triggerLabel = document.createElement('span');
+  triggerLabel.className = 'tabs-compass-trigger-label';
+  triggerLabel.textContent = labels[0] || '';
 
-    button.addEventListener('click', () => {
-      block.querySelectorAll('[role=tabpanel]').forEach((panel) => {
-        panel.setAttribute('aria-hidden', true);
-      });
-      tablist.querySelectorAll('button').forEach((btn) => {
-        btn.setAttribute('aria-selected', false);
-      });
-      tabpanel.setAttribute('aria-hidden', false);
-      button.setAttribute('aria-selected', true);
-    });
+  const chevron = document.createElement('span');
+  chevron.className = 'tabs-compass-chevron';
+  chevron.setAttribute('aria-hidden', 'true');
+  chevron.innerHTML = CHEVRON_SVG;
 
-    // add the new tab list button, to the tablist
-    tablist.append(button);
+  trigger.append(triggerLabel, chevron);
 
-    // remove the tab heading from the dom, which also removes it from the UE tree
-    tab.remove();
+  const dropdown = document.createElement('ul');
+  dropdown.className = 'tabs-compass-dropdown';
+  dropdown.setAttribute('role', 'listbox');
+  dropdown.hidden = true;
 
-    // remove the instrumentation from the button's h1, h2 etc (this removes it from the tree)
-    if (button.firstElementChild) {
-      button.firstElementChild.removeAttribute('data-aue-resource');
+  function selectOption(idx) {
+    triggerLabel.textContent = labels[idx] || '';
+    panels.forEach((p, i) => p.setAttribute('aria-hidden', i !== idx));
+    [...dropdown.children].forEach((opt, i) => opt.setAttribute('aria-selected', i === idx));
+    trigger.setAttribute('aria-expanded', 'false');
+    dropdown.hidden = true;
+  }
+
+  labels.forEach((label, i) => {
+    const li = document.createElement('li');
+    li.className = 'tabs-compass-option';
+    li.setAttribute('role', 'option');
+    li.setAttribute('aria-selected', i === 0);
+    li.tabIndex = -1;
+    li.textContent = label;
+    li.addEventListener('click', () => selectOption(i));
+    dropdown.append(li);
+  });
+
+  trigger.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+    trigger.setAttribute('aria-expanded', String(!isOpen));
+    dropdown.hidden = isOpen;
+    if (!isOpen) dropdown.querySelector('[role=option]')?.focus();
+  });
+
+  document.addEventListener('click', () => {
+    if (!dropdown.hidden) {
+      trigger.setAttribute('aria-expanded', 'false');
+      dropdown.hidden = true;
+    }
+  }, { passive: true });
+
+  dropdown.addEventListener('keydown', (e) => {
+    const opts = [...dropdown.querySelectorAll('[role=option]')];
+    const idx = opts.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') {
+      opts[Math.min(idx + 1, opts.length - 1)]?.focus();
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      opts[Math.max(idx - 1, 0)]?.focus();
+      e.preventDefault();
+    } else if (e.key === 'Enter' || e.key === ' ') {
+      if (idx >= 0) selectOption(idx);
+      e.preventDefault();
+    } else if (e.key === 'Escape') {
+      trigger.setAttribute('aria-expanded', 'false');
+      dropdown.hidden = true;
+      trigger.focus();
     }
   });
 
-  block.prepend(tablist);
+  triggerWrapper.append(trigger, dropdown);
+  heading.append(prefix, triggerWrapper);
+  block.prepend(heading);
+}
 
-  // Group card content into individual card containers
-  // Each card pattern: h3 + p(image) + p(description) + p.button-container
-  block.querySelectorAll('.tabs-compass-panel > div').forEach((cell) => {
-    const children = [...cell.children];
-    const cards = [];
-    let currentCard = null;
+function buildTabList(block, labels, panels) {
+  const tablist = document.createElement('div');
+  tablist.className = 'tabs-compass-list';
+  tablist.setAttribute('role', 'tablist');
+  tablist.id = `tablist-${tabBlockCnt}`;
 
-    children.forEach((el) => {
-      if (el.tagName === 'H3') {
-        // Start a new card
-        currentCard = document.createElement('div');
-        currentCard.className = 'tabs-compass-card';
-        cards.push(currentCard);
-        currentCard.append(el);
-      } else if (currentCard) {
-        currentCard.append(el);
-      }
+  labels.forEach((label, i) => {
+    const id = panels[i].id;
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tabs-compass-tab';
+    btn.id = `tab-${id}`;
+    btn.textContent = label;
+    btn.setAttribute('aria-controls', id);
+    btn.setAttribute('aria-selected', i === 0);
+    btn.setAttribute('role', 'tab');
+    panels[i].setAttribute('aria-labelledby', btn.id);
+
+    btn.addEventListener('click', () => {
+      panels.forEach((p) => p.setAttribute('aria-hidden', true));
+      [...tablist.querySelectorAll('button')].forEach((b) => b.setAttribute('aria-selected', false));
+      panels[i].setAttribute('aria-hidden', false);
+      btn.setAttribute('aria-selected', true);
     });
 
-    // Replace cell content with card containers
-    cell.innerHTML = '';
-    cards.forEach((card) => cell.append(card));
+    tablist.append(btn);
   });
+
+  block.prepend(tablist);
+}
+
+export default async function decorate(block) {
+  tabBlockCnt += 1;
+  const isCustomerStories = block.classList.contains('customer-stories');
+
+  // Extract tab labels and set up panels (each row → panel; label cell removed)
+  const rows = [...block.children].filter(
+    (row) => row.firstElementChild?.children.length > 0,
+  );
+
+  const labels = rows.map((row) => {
+    const labelCell = row.firstElementChild;
+    const label = labelCell.textContent.trim();
+    labelCell.remove();
+    return label;
+  });
+
+  rows.forEach((row, i) => {
+    const id = `tabpanel-${tabBlockCnt}-tab-${i + 1}`;
+    row.className = 'tabs-compass-panel';
+    row.id = id;
+    row.setAttribute('role', 'tabpanel');
+    row.setAttribute('aria-hidden', i !== 0);
+  });
+
+  const panels = rows;
+
+  // Group card content within each panel's cell
+  block.querySelectorAll('.tabs-compass-panel > div').forEach(groupCards);
+
+  if (isCustomerStories) {
+    buildDropdown(block, labels, panels);
+  } else {
+    buildTabList(block, labels, panels);
+  }
 }

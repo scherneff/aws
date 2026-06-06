@@ -2,6 +2,21 @@
    "I want to see customer stories in [category]" with filtered content cards.
    Extracted from source: aws.amazon.com #compass-lite */
 
+.tabs-compass-container {
+  padding-block: 40px;
+  padding-inline: var(--content-padding-inline);
+  max-width: 1440px;
+  margin-inline: auto;
+  box-sizing: border-box;
+}
+
+@media (width >= 900px) {
+  .tabs-compass-container {
+    padding-block: 60px;
+    padding-inline: 120px;
+  }
+}
+
 /* --- Tab list (heading area) --- */
 .tabs-compass .tabs-compass-list {
   display: flex;
@@ -9,6 +24,12 @@
   gap: 8px;
   padding: 0 0 32px;
   margin: 0;
+}
+
+/* Hide the tablist when there is only one tab — acts as a content section, not a selector */
+/* stylelint-disable-next-line no-descending-specificity */
+.tabs-compass .tabs-compass-list:has(button:only-child) {
+  display: none;
 }
 
 .tabs-compass .tabs-compass-tab {
@@ -167,6 +188,125 @@
 
 .tabs-compass .tabs-compass-card a.button:any-link:hover::after {
   transform: translateX(4px);
+}
+
+/* ============================================================
+   Customer-stories variant: "I want to see new customer stories in [industry ▼]"
+   Matches aws.amazon.com compass-lite dropdown-in-heading design.
+   ============================================================ */
+
+/* Hide the old tab list when dropdown heading is used */
+/* stylelint-disable-next-line no-descending-specificity */
+.tabs-compass.customer-stories .tabs-compass-list {
+  display: none;
+}
+
+/* Heading line containing the prefix + trigger */
+.tabs-compass.customer-stories .tabs-compass-heading {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.25;
+  font-family: var(--heading-font-family);
+  color: var(--color-aws-ink);
+  margin: 0 0 40px;
+}
+
+/* Static prefix text */
+.tabs-compass.customer-stories .tabs-compass-prefix {
+  white-space: nowrap;
+}
+
+/* Wrapper gives dropdown a positioning context */
+.tabs-compass.customer-stories .tabs-compass-trigger-wrapper {
+  display: inline-flex;
+  align-items: baseline;
+  position: relative;
+  vertical-align: baseline;
+}
+
+/* The inline trigger button */
+.tabs-compass.customer-stories .tabs-compass-trigger {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+/* Industry name — gradient purple → blue text */
+.tabs-compass.customer-stories .tabs-compass-trigger-label {
+  background: linear-gradient(to right, #a000b8, #003efa);
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-background-clip: text;
+  /* stylelint-disable-next-line property-no-vendor-prefix */
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+/* Gradient underline */
+.tabs-compass.customer-stories .tabs-compass-trigger-label::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(to right, #a000b8, #003efa);
+}
+
+/* Chevron arrow */
+.tabs-compass.customer-stories .tabs-compass-chevron {
+  display: inline-flex;
+  align-items: center;
+  color: #003efa;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1);
+  align-self: center;
+}
+
+.tabs-compass.customer-stories .tabs-compass-trigger[aria-expanded='true'] .tabs-compass-chevron {
+  transform: rotate(180deg);
+}
+
+/* Dropdown list */
+.tabs-compass.customer-stories .tabs-compass-dropdown {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 1px 1px 24px rgb(0 0 0 / 25%);
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  min-width: 240px;
+}
+
+/* Dropdown option */
+.tabs-compass.customer-stories .tabs-compass-option {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--color-aws-ink);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  outline: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.tabs-compass.customer-stories .tabs-compass-option:hover,
+.tabs-compass.customer-stories .tabs-compass-option:focus-visible,
+.tabs-compass.customer-stories .tabs-compass-option[aria-selected='true'] {
+  background-color: #f3f3f7;
 }
 
 /* --- Desktop layout (2 columns, horizontal cards) --- */
