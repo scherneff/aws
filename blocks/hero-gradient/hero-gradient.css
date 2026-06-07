@@ -139,7 +139,10 @@ main .hero-gradient a.button:any-link:focus-visible {
     z-index: auto;
     grid-column: 1;
     grid-row: 1;
-    padding: 104px 40px 125px 160px;
+
+    /* padding-inline aligns hero text with content grid: max(120px, 100% - 600px)
+       where 100% = column width (50vw), matching max(120px, (viewport-1200px)/2) */
+    padding: 96px max(120px, calc(100% - 600px)) 125px;
     display: flex;
     align-items: flex-start;
   }
@@ -156,12 +159,5 @@ main .hero-gradient a.button:any-link:focus-visible {
 
   .hero-gradient p.button-container {
     margin-top: 32px;
-  }
-}
-
-/* Wide screens: scale left padding proportionally */
-@media (width >= 1200px) {
-  .hero-gradient > div:last-child {
-    padding-left: 11.1%; /* ~160px at 1440px viewport */
   }
 }
