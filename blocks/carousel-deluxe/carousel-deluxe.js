@@ -29,17 +29,42 @@ function updateActiveSlide(slide) {
 }
 
 export function showSlide(block, slideIndex = 0, behavior = 'smooth') {
+  const slidesEl = block.querySelector('.carousel-deluxe-slides');
   const slides = block.querySelectorAll('.carousel-deluxe-slide');
   let realSlideIndex = slideIndex < 0 ? slides.length - 1 : slideIndex;
   if (slideIndex >= slides.length) realSlideIndex = 0;
   const activeSlide = slides[realSlideIndex];
 
   activeSlide.querySelectorAll('a').forEach((link) => link.removeAttribute('tabindex'));
-  block.querySelector('.carousel-deluxe-slides').scrollTo({
+  const centeredLeft = activeSlide.offsetLeft + activeSlide.offsetWidth / 2 - slidesEl.offsetWidth / 2;
+  slidesEl.scrollTo({
     top: 0,
-    left: activeSlide.offsetLeft,
+    left: Math.max(0, centeredLeft),
     behavior,
   });
+}
+
+function updateHaloPosition(block) {
+  const slidesEl = block.querySelector('.carousel-deluxe-slides');
+  const slides = [...block.querySelectorAll('.carousel-deluxe-slide')];
+  const containerWidth = slidesEl.offsetWidth;
+  const viewportCenter = slidesEl.scrollLeft + containerWidth / 2;
+
+  let bestSlide = null;
+  let bestDist = Infinity;
+  slides.forEach((slide) => {
+    const dist = Math.abs((slide.offsetLeft + slide.offsetWidth / 2) - viewportCenter);
+    if (dist < bestDist) {
+      bestDist = dist;
+      bestSlide = slide;
+    }
+  });
+
+  if (!bestSlide) return;
+  const left = Math.max(0, bestSlide.offsetLeft - slidesEl.scrollLeft);
+  const right = Math.max(0, containerWidth - left - bestSlide.offsetWidth);
+  block.style.setProperty('--halo-left', `${left}px`);
+  block.style.setProperty('--halo-right', `${right}px`);
 }
 
 function bindEvents(block) {
@@ -59,6 +84,10 @@ function bindEvents(block) {
   block.querySelector('.slide-next').addEventListener('click', () => {
     showSlide(block, parseInt(block.dataset.activeSlide, 10) + 1);
   });
+
+  const slidesEl = block.querySelector('.carousel-deluxe-slides');
+  slidesEl.addEventListener('scroll', () => updateHaloPosition(block), { passive: true });
+  requestAnimationFrame(() => updateHaloPosition(block));
 
   const slideObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
