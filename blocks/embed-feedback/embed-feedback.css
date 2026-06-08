@@ -10,6 +10,7 @@
 
 .embed-feedback-wrapper {
   max-width: 1200px !important;
+  margin-inline: auto !important;
   padding: 0 !important;
 }
 

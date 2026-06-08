@@ -574,7 +574,7 @@ main img:not([width], [height]) {
 /* sections – boilerplate structure with design tokens */
 :is(main, article.article-body) > .section {
   margin: inherit;
-  padding-block: 0;
+  padding-block: var(--section-block-space);
 }
 
 main > .section:first-child {
