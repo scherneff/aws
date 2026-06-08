@@ -26,6 +26,7 @@
 .carousel-deluxe .carousel-deluxe-slides-container {
   position: relative;
   z-index: 0;
+  overflow: hidden;
 }
 
 /* Gradient halo — sits behind the scroll container so it isn't clipped by overflow: scroll clip */
@@ -330,10 +331,14 @@
   left: calc(50% - 2px);
 }
 
-/* === Scale animation: peek slides shrink, current slide at 100% === */
+/* === Scale animation: peek slides shrink, current slide at 100% ===
+   translateX compensates for center-origin scaling so the peek-visible
+   edge of each adjacent slide stays anchored at its layout boundary,
+   keeping the actual slide image visible in the peek strip. */
 @keyframes carousel-slide-scale {
-  0%, 100% { transform: scale(0.88); }
-  50% { transform: scale(1); }
+  0% { transform: translateX(-6%) scale(0.88); }  /* entering from right: anchor left edge */
+  50% { transform: none; }                          /* centered: full size */
+  100% { transform: translateX(6%) scale(0.88); }  /* exiting to left: anchor right edge */
 }
 
 /* === Desktop styles === */
