@@ -1,0 +1,61 @@
+{
+  "definitions": [
+    {
+      "title": "Globe",
+      "id": "embed-globe",
+      "model": "embed-globe",
+      "plugins": {
+        "da": {
+          "name": "embed-globe",
+          "rows": 1,
+          "columns": 1,
+          "fields": [
+            { "name": "heading", "selector": "div>div>h2" },
+            { "name": "subtitle", "selector": "div>div>h5" },
+            { "name": "regions", "selector": "div>div>p:nth-child(3)" },
+            { "name": "linkText", "selector": "div>div>p:last-child>a" },
+            { "name": "linkUrl", "selector": "div>div>p:last-child>a[href]" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "embed-globe",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "regions",
+          "label": "Regions"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "linkText",
+          "label": "Link Text"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "linkUrl",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

@@ -60,6 +60,84 @@
       "id": "blocks",
       "components": [
         {
+          "title": "Cards Editorial",
+          "id": "cards-editorial",
+          "model": "cards-editorial",
+          "filter": "cards-editorial",
+          "plugins": {
+            "da": {
+              "name": "cards-editorial",
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
+          "title": "Cards Editorial Item",
+          "id": "cards-editorial-item",
+          "model": "cards-editorial-item",
+          "plugins": {
+            "da": {
+              "name": "cards-editorial-item",
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Cards Industry",
+          "id": "cards-industry",
+          "model": "cards-industry",
+          "filter": "cards-industry",
+          "plugins": {
+            "da": {
+              "name": "cards-industry",
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
+          "title": "Cards Industry Item",
+          "id": "cards-industry-item",
+          "model": "cards-industry-item",
+          "plugins": {
+            "da": {
+              "name": "cards-industry-item",
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Cards",
           "id": "cards",
           "model": "cards",
@@ -93,6 +171,57 @@
                 {
                   "name": "text",
                   "selector": "div:nth-child(2)"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Carousel",
+          "id": "carousel-deluxe",
+          "model": "carousel-deluxe",
+          "filter": "carousel-deluxe",
+          "plugins": {
+            "da": {
+              "name": "carousel-deluxe",
+              "rows": 1,
+              "columns": 2
+            }
+          }
+        },
+        {
+          "title": "Carousel Slide",
+          "id": "carousel-deluxe-slide",
+          "model": "carousel-deluxe-slide",
+          "plugins": {
+            "da": {
+              "name": "carousel-deluxe-slide",
+              "rows": 1,
+              "columns": 2,
+              "fields": [
+                {
+                  "name": "image",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "category",
+                  "selector": "div:nth-child(2)>p:first-child"
+                },
+                {
+                  "name": "heading",
+                  "selector": "div:nth-child(2)>h2"
+                },
+                {
+                  "name": "ctaText",
+                  "selector": "div:nth-child(2)>p.button-container>a"
+                },
+                {
+                  "name": "ctaUrl",
+                  "selector": "div:nth-child(2)>p.button-container>a[href]"
                 }
               ]
             }
@@ -137,6 +266,52 @@
           }
         },
         {
+          "title": "Feedback Widget",
+          "id": "embed-feedback",
+          "model": "embed-feedback",
+          "plugins": {
+            "da": {
+              "name": "embed-feedback",
+              "rows": 0,
+              "columns": 0
+            }
+          }
+        },
+        {
+          "title": "Globe",
+          "id": "embed-globe",
+          "model": "embed-globe",
+          "plugins": {
+            "da": {
+              "name": "embed-globe",
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "heading",
+                  "selector": "div>div>h2"
+                },
+                {
+                  "name": "subtitle",
+                  "selector": "div>div>h5"
+                },
+                {
+                  "name": "regions",
+                  "selector": "div>div>p:nth-child(3)"
+                },
+                {
+                  "name": "linkText",
+                  "selector": "div>div>p:last-child>a"
+                },
+                {
+                  "name": "linkUrl",
+                  "selector": "div>div>p:last-child>a[href]"
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Embed",
           "id": "embed",
           "model": "embed",
@@ -157,6 +332,37 @@
                 {
                   "name": "embedUrl",
                   "selector": "div>div>p"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "FAQ",
+          "id": "faq",
+          "model": "faq",
+          "filter": "faq",
+          "plugins": {
+            "da": {
+              "name": "faq",
+              "rows": 1,
+              "columns": 1
+            }
+          }
+        },
+        {
+          "title": "FAQ Category",
+          "id": "faq-item",
+          "model": "faq-item",
+          "plugins": {
+            "da": {
+              "name": "faq-item",
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "category",
+                  "selector": "div>div"
                 }
               ]
             }
@@ -205,6 +411,40 @@
                 {
                   "name": "urlText",
                   "selector": "div>div>p>a"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Hero Gradient",
+          "id": "hero-gradient",
+          "model": "hero-gradient",
+          "plugins": {
+            "da": {
+              "name": "hero-gradient",
+              "rows": 3,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "imageLightSrc",
+                  "selector": "div:nth-child(1)>picture>img[src]"
+                },
+                {
+                  "name": "imageLightAlt",
+                  "selector": "div:nth-child(1)>picture>img[alt]"
+                },
+                {
+                  "name": "imageDarkSrc",
+                  "selector": "div:nth-child(2)>picture>img[src]"
+                },
+                {
+                  "name": "imageDarkAlt",
+                  "selector": "div:nth-child(2)>picture>img[alt]"
+                },
+                {
+                  "name": "text",
+                  "selector": "div:nth-child(3)"
                 }
               ]
             }
@@ -268,6 +508,35 @@
                   "selector": "div:nth-child(2)"
                 }
               ]
+            }
+          }
+        },
+        {
+          "title": "Product Grid",
+          "id": "product-grid",
+          "model": "product-grid",
+          "plugins": {
+            "da": {
+              "name": "product-grid",
+              "rows": 1,
+              "columns": 1,
+              "fields": [
+                {
+                  "name": "indexUrl",
+                  "selector": "div>div>p>a[href]"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "title": "Quiz",
+          "id": "quiz",
+          "model": "quiz",
+          "plugins": {
+            "da": {
+              "name": "quiz",
+              "type": "key-value-block"
             }
           }
         },

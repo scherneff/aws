@@ -1,7 +1,7 @@
 import { moveInstrumentation } from './ue-utils.js';
 
 const setupObservers = () => {
-  const mutatingBlocks = document.querySelectorAll('div.cards, div.journey-map');
+  const mutatingBlocks = document.querySelectorAll('div.cards, div.cards-editorial, div.cards-industry, div.carousel-deluxe, div.journey-map');
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.type === 'childList' && mutation.target.tagName === 'DIV') {
@@ -11,33 +11,57 @@ const setupObservers = () => {
         // detect the mutation type of the block or picture (for cards)
         const type = mutation.target.classList.contains('cards-card-image')
           ? 'cards-image'
-          : mutation.target.attributes['data-aue-component']?.value;
+          : mutation.target.classList.contains('cards-editorial-card-image')
+            ? 'cards-editorial-image'
+            : mutation.target.classList.contains('cards-industry-card-image')
+              ? 'cards-industry-image'
+              : mutation.target.attributes['data-aue-component']?.value;
+
+        // shared helper: move instrumentation from removed divs to matching li children in a new ul
+        const moveDivsToUl = (added, removed) => {
+          if (added.length === 1 && added[0].tagName === 'UL') {
+            const ulEl = added[0];
+            [...removed].filter((n) => n.tagName === 'DIV').forEach((div, i) => {
+              if (i < ulEl.children.length) moveInstrumentation(div, ulEl.children[i]);
+            });
+          }
+        };
+
+        // shared helper: move instrumentation when a picture is replaced inside a card-image div
+        const movePictureInstrumentation = (added, removed) => {
+          const addedPic = [...added].filter((n) => n.tagName === 'PICTURE');
+          const removedPic = [...removed].filter((n) => n.tagName === 'PICTURE');
+          if (addedPic.length === 1 && removedPic.length === 1) {
+            const oldImg = removedPic[0].querySelector('img');
+            const newImg = addedPic[0].querySelector('img');
+            if (oldImg && newImg) moveInstrumentation(oldImg, newImg);
+          }
+        };
 
         switch (type) {
           case 'cards':
-            // handle card div > li replacements
-            if (addedElements.length === 1 && addedElements[0].tagName === 'UL') {
-              const ulEl = addedElements[0];
-              const removedDivEl = [...mutation.removedNodes].filter((node) => node.tagName === 'DIV');
-              removedDivEl.forEach((div, index) => {
-                if (index < ulEl.children.length) {
-                  moveInstrumentation(div, ulEl.children[index]);
-                }
-              });
-            }
+            moveDivsToUl(addedElements, mutation.removedNodes);
             break;
           case 'cards-image':
-            // handle card-image picture replacements
             if (mutation.target.classList.contains('cards-card-image')) {
-              const addedPictureEl = [...mutation.addedNodes].filter((node) => node.tagName === 'PICTURE');
-              const removedPictureEl = [...mutation.removedNodes].filter((node) => node.tagName === 'PICTURE');
-              if (addedPictureEl.length === 1 && removedPictureEl.length === 1) {
-                const oldImgEl = removedPictureEl[0].querySelector('img');
-                const newImgEl = addedPictureEl[0].querySelector('img');
-                if (oldImgEl && newImgEl) {
-                  moveInstrumentation(oldImgEl, newImgEl);
-                }
-              }
+              movePictureInstrumentation(addedElements, mutation.removedNodes);
+            }
+            break;
+          case 'cards-editorial':
+          case 'cards-industry':
+            moveDivsToUl(addedElements, mutation.removedNodes);
+            break;
+          case 'cards-editorial-image':
+          case 'cards-industry-image':
+            movePictureInstrumentation(addedElements, mutation.removedNodes);
+            break;
+          case 'carousel-deluxe':
+            // rows become li.carousel-deluxe-slide elements inside a ul
+            if (addedElements.length === 1 && addedElements[0].tagName === 'UL') {
+              const ulEl = addedElements[0];
+              [...mutation.removedNodes].filter((n) => n.tagName === 'DIV').forEach((div, i) => {
+                if (i < ulEl.children.length) moveInstrumentation(div, ulEl.children[i]);
+              });
             }
             break;
           case 'journey-map':

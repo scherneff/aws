@@ -1,0 +1,92 @@
+{
+  "definitions": [
+    {
+      "title": "Carousel",
+      "id": "carousel-deluxe",
+      "model": "carousel-deluxe",
+      "filter": "carousel-deluxe",
+      "plugins": {
+        "da": {
+          "name": "carousel-deluxe",
+          "rows": 1,
+          "columns": 2
+        }
+      }
+    },
+    {
+      "title": "Carousel Slide",
+      "id": "carousel-deluxe-slide",
+      "model": "carousel-deluxe-slide",
+      "plugins": {
+        "da": {
+          "name": "carousel-deluxe-slide",
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "category", "selector": "div:nth-child(2)>p:first-child" },
+            { "name": "heading", "selector": "div:nth-child(2)>h2" },
+            { "name": "ctaText", "selector": "div:nth-child(2)>p.button-container>a" },
+            { "name": "ctaUrl", "selector": "div:nth-child(2)>p.button-container>a[href]" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "carousel-deluxe",
+      "fields": []
+    },
+    {
+      "id": "carousel-deluxe-slide",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Background Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Image Alt Text",
+          "value": ""
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "category",
+          "label": "Category Badge"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "heading",
+          "label": "Heading"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "ctaText",
+          "label": "CTA Text"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "ctaUrl",
+          "label": "CTA URL"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "carousel-deluxe",
+      "components": ["carousel-deluxe-slide"]
+    }
+  ]
+}

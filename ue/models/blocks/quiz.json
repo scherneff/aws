@@ -1,0 +1,37 @@
+{
+  "definitions": [
+    {
+      "title": "Quiz",
+      "id": "quiz",
+      "model": "quiz",
+      "plugins": {
+        "da": {
+          "name": "quiz",
+          "type": "key-value-block"
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "quiz",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "completeMessage",
+          "label": "Completion Message",
+          "value": "Great job! You completed the quiz.",
+          "description": "Shown after all questions are answered"
+        },
+        {
+          "component": "checkbox",
+          "valueType": "boolean",
+          "name": "doNotMarkLessonAsCompleted",
+          "label": "Do Not Mark Lesson as Completed"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

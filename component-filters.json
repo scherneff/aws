@@ -25,9 +25,27 @@
     ]
   },
   {
+    "id": "cards-editorial",
+    "components": [
+      "cards-editorial-item"
+    ]
+  },
+  {
+    "id": "cards-industry",
+    "components": [
+      "cards-industry-item"
+    ]
+  },
+  {
     "id": "cards",
     "components": [
       "cards-item"
+    ]
+  },
+  {
+    "id": "carousel-deluxe",
+    "components": [
+      "carousel-deluxe-slide"
     ]
   },
   {
@@ -45,6 +63,12 @@
     "components": [
       "text",
       "image"
+    ]
+  },
+  {
+    "id": "faq",
+    "components": [
+      "faq-item"
     ]
   },
   {

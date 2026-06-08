@@ -149,6 +149,64 @@
     ]
   },
   {
+    "id": "cards-editorial",
+    "fields": []
+  },
+  {
+    "id": "cards-editorial-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt Text",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
+    "id": "cards-industry",
+    "fields": []
+  },
+  {
+    "id": "cards-industry-item",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Alt Text",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "cards",
     "fields": [
       {
@@ -195,6 +253,53 @@
     ]
   },
   {
+    "id": "carousel-deluxe",
+    "fields": []
+  },
+  {
+    "id": "carousel-deluxe-slide",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "image",
+        "label": "Background Image",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageAlt",
+        "label": "Image Alt Text",
+        "value": ""
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "category",
+        "label": "Category Badge"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaText",
+        "label": "CTA Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "ctaUrl",
+        "label": "CTA URL"
+      }
+    ]
+  },
+  {
     "id": "columns",
     "fields": [
       {
@@ -207,6 +312,45 @@
           "numberMin": 1,
           "numberMax": 6
         }
+      }
+    ]
+  },
+  {
+    "id": "embed-feedback",
+    "fields": []
+  },
+  {
+    "id": "embed-globe",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "heading",
+        "label": "Heading"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "subtitle",
+        "label": "Subtitle"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "regions",
+        "label": "Regions"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkText",
+        "label": "Link Text"
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "linkUrl",
+        "label": "Link URL"
       }
     ]
   },
@@ -250,6 +394,22 @@
         "valueType": "string",
         "required": true,
         "description": "URL to embed (YouTube, Vimeo, Twitter, or any embed URL)"
+      }
+    ]
+  },
+  {
+    "id": "faq",
+    "fields": []
+  },
+  {
+    "id": "faq-item",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "category",
+        "label": "Category Name",
+        "required": true
       }
     ]
   },
@@ -305,6 +465,45 @@
     ]
   },
   {
+    "id": "hero-gradient",
+    "fields": [
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "imageLightSrc",
+        "label": "Image – Light Mode",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageLightAlt",
+        "label": "Image Alt (Light)",
+        "value": ""
+      },
+      {
+        "component": "reference",
+        "valueType": "string",
+        "name": "imageDarkSrc",
+        "label": "Image – Dark Mode",
+        "multi": false
+      },
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "imageDarkAlt",
+        "label": "Image Alt (Dark)",
+        "value": ""
+      },
+      {
+        "component": "richtext",
+        "name": "text",
+        "label": "Content",
+        "valueType": "string"
+      }
+    ]
+  },
+  {
     "id": "hero",
     "fields": [
       {
@@ -347,6 +546,37 @@
         "label": "Step Content",
         "valueType": "string",
         "required": true
+      }
+    ]
+  },
+  {
+    "id": "product-grid",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "indexUrl",
+        "label": "Product Index URL",
+        "description": "URL to the product index JSON (e.g. /products/tools/index.json)"
+      }
+    ]
+  },
+  {
+    "id": "quiz",
+    "fields": [
+      {
+        "component": "text",
+        "valueType": "string",
+        "name": "completeMessage",
+        "label": "Completion Message",
+        "value": "Great job! You completed the quiz.",
+        "description": "Shown after all questions are answered"
+      },
+      {
+        "component": "checkbox",
+        "valueType": "boolean",
+        "name": "doNotMarkLessonAsCompleted",
+        "label": "Do Not Mark Lesson as Completed"
       }
     ]
   },

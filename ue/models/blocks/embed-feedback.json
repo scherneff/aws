@@ -1,0 +1,23 @@
+{
+  "definitions": [
+    {
+      "title": "Feedback Widget",
+      "id": "embed-feedback",
+      "model": "embed-feedback",
+      "plugins": {
+        "da": {
+          "name": "embed-feedback",
+          "rows": 0,
+          "columns": 0
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "embed-feedback",
+      "fields": []
+    }
+  ],
+  "filters": []
+}

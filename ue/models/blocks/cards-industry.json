@@ -1,0 +1,71 @@
+{
+  "definitions": [
+    {
+      "title": "Cards Industry",
+      "id": "cards-industry",
+      "model": "cards-industry",
+      "filter": "cards-industry",
+      "plugins": {
+        "da": {
+          "name": "cards-industry",
+          "rows": 1,
+          "columns": 2
+        }
+      }
+    },
+    {
+      "title": "Cards Industry Item",
+      "id": "cards-industry-item",
+      "model": "cards-industry-item",
+      "plugins": {
+        "da": {
+          "name": "cards-industry-item",
+          "rows": 1,
+          "columns": 2,
+          "fields": [
+            { "name": "image", "selector": "div:nth-child(1)>picture>img[src]" },
+            { "name": "imageAlt", "selector": "div:nth-child(1)>picture>img[alt]" },
+            { "name": "text", "selector": "div:nth-child(2)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "cards-industry",
+      "fields": []
+    },
+    {
+      "id": "cards-industry-item",
+      "fields": [
+        {
+          "component": "reference",
+          "valueType": "string",
+          "name": "image",
+          "label": "Image",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "imageAlt",
+          "label": "Alt Text",
+          "value": ""
+        },
+        {
+          "component": "richtext",
+          "name": "text",
+          "label": "Content",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "cards-industry",
+      "components": ["cards-industry-item"]
+    }
+  ]
+}
