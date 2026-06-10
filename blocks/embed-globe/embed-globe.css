@@ -1,101 +1,335 @@
-/* Block: embed-globe
- * AWS Global Infrastructure section with heading, subtitle, regions, and link.
- * Extracted values from source: padding 56px 120px, max-width 1440px, gap 16px.
- */
-
-.embed-globe-wrapper {
-  max-width: 100% !important;
-  padding: 0 !important;
-}
+/* =============================================================
+   Embed Globe Block  — scherneff/aws
+   ============================================================= */
 
 .embed-globe {
-  color: var(--color-text);
-  padding: 56px var(--content-padding-inline);
-  max-width: 1440px;
+  container-type: inline-size;
   margin: 0 auto;
+  max-width: 1200px;
 }
 
-.embed-globe .embed-globe-content {
+/* Two-column grid: globe left, panel right */
+.eg-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 580px;
+  background: #080d18;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 40px rgb(0 0 0 / 50%);
+}
+
+@container (max-width: 720px) {
+  .eg-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .eg-globe-col {
+    min-height: 320px;
+  }
+}
+
+/* Globe column */
+.eg-globe-col {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: stretch;
+  background: radial-gradient(ellipse at 38% 48%, #0b2240 0%, #04080f 68%);
+  min-height: 400px;
 }
 
-.embed-globe h2 {
-  font-size: 28px;
-  font-weight: 500;
-  font-family: var(--body-font-family);
-  line-height: 1.286;
-  color: rgb(22 29 38);
+.eg-globe-container {
+  flex: 1;
+  position: relative;
+}
+
+.eg-globe-container canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  cursor: grab;
+}
+
+.eg-globe-container canvas:active {
+  cursor: grabbing;
+}
+
+.eg-hint {
+  text-align: center;
+  font-size: 10px;
+  color: rgb(255 255 255 / 22%);
+  padding: 6px 0 10px;
   margin: 0;
+  pointer-events: none;
+  font-family: var(--body-font-family, sans-serif);
 }
 
-.embed-globe h5 {
-  font-size: 16px;
-  font-weight: 400;
-  font-family: var(--body-font-family);
-  line-height: 1.444;
-  color: rgb(35 43 55);
-  margin: 0;
-  max-width: 800px;
+/* Panel column */
+.eg-panel-col {
+  display: flex;
+  flex-direction: column;
+  background: #0d1525;
+  border-left: 1px solid rgb(255 255 255 / 7%);
+  overflow: hidden;
 }
 
-.embed-globe p {
-  font-size: 14px;
-  font-family: var(--body-font-family);
-  line-height: 1.6;
-  color: var(--color-text);
-  margin: 0;
+/* Continent tabs */
+.eg-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  padding: 14px 14px 0;
+  border-bottom: 1px solid rgb(255 255 255 / 8%);
 }
 
-.embed-globe a:any-link {
-  color: var(--link-color);
-  font-size: 14px;
-  font-weight: 400;
-  text-decoration: none;
-}
-
-.embed-globe a:hover {
-  text-decoration: underline;
-  color: var(--link-hover-color);
-}
-
-/* Reset button styles applied by EDS auto-decoration */
-.embed-globe .button-container {
-  margin: 0;
-}
-
-.embed-globe a.button:any-link {
-  all: unset;
-  color: var(--link-color);
-  font-size: 14px;
-  font-weight: 400;
-  text-decoration: none;
-  cursor: pointer;
-  font-family: var(--body-font-family);
-  line-height: 1.6;
-}
-
-.embed-globe a.button:any-link:hover {
-  text-decoration: underline;
-  color: var(--link-hover-color);
-  background: none;
+.eg-tab {
+  padding: 6px 11px;
+  background: transparent;
   border: none;
-  box-shadow: none;
-  transform: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  border-radius: 4px 4px 0 0;
+  color: rgb(255 255 255 / 45%);
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: var(--body-font-family, sans-serif);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
 }
 
-@media (width >= 900px) {
-  .embed-globe {
-    padding: 56px 120px;
-  }
+.eg-tab:hover {
+  color: rgb(255 255 255 / 80%);
+  background: rgb(255 255 255 / 5%);
+}
 
-  .embed-globe h2 {
-    font-size: 28px;
-  }
+.eg-tab[aria-selected='true'] {
+  color: #fff;
+  border-bottom-color: #7c3aed;
+  background: rgb(124 58 237 / 12%);
+}
 
-  .embed-globe h5 {
-    font-size: 18px;
-    line-height: 1.444;
+/* Scrollable panel body */
+.eg-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 18px;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 12%) transparent;
+}
+
+.eg-panel-content::-webkit-scrollbar { width: 4px; }
+
+.eg-panel-content::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 12%);
+  border-radius: 2px;
+}
+
+/* Panel header */
+.eg-panel-hdr {
+  margin-bottom: 18px;
+}
+
+.eg-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgb(124 58 237 / 18%);
+  border: 1px solid rgb(124 58 237 / 35%);
+  border-radius: 3px;
+  color: #a78bfa;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+
+.eg-panel-title {
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.25;
+}
+
+/* Accordion */
+.eg-accordion {
+  margin-bottom: 8px;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.eg-accordion-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 15px;
+  background: rgb(255 255 255 / 4%);
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  font-family: var(--body-font-family, sans-serif);
+  transition: background 0.15s;
+}
+
+.eg-accordion-btn:hover {
+  background: rgb(255 255 255 / 7%);
+}
+
+.eg-accordion-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eg-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: rgb(124 58 237 / 22%);
+  color: #c4b5fd;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+/* +/- icon */
+.eg-accordion-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.eg-accordion-icon::before,
+.eg-accordion-icon::after {
+  content: '';
+  position: absolute;
+  background: rgb(255 255 255 / 55%);
+  border-radius: 1px;
+}
+
+.eg-accordion-icon::before {
+  width: 9px; height: 1.5px;
+  top: 6.75px; left: 3px;
+}
+
+.eg-accordion-icon::after {
+  width: 1.5px; height: 9px;
+  top: 3px; left: 6.75px;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.eg-accordion-btn[aria-expanded='true'] .eg-accordion-icon::after {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.eg-accordion-body {
+  overflow: hidden;
+  transition: max-height 0.28s ease;
+  background: rgb(0 0 0 / 18%);
+}
+
+/* Region list */
+.eg-region-list {
+  list-style: none;
+  margin: 0;
+  padding: 10px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.eg-region-list li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 0;
+  font-size: 12.5px;
+  color: rgb(255 255 255 / 82%);
+  border-bottom: 1px solid rgb(255 255 255 / 4%);
+  font-family: var(--body-font-family, sans-serif);
+}
+
+.eg-region-list li:last-child {
+  border-bottom: none;
+}
+
+/* Dots */
+.eg-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.eg-dot-on {
+  background: #22c55e;
+  box-shadow: 0 0 5px rgb(34 197 94 / 60%);
+}
+
+.eg-dot-soon {
+  background: transparent;
+  border: 1.5px solid rgb(255 255 255 / 38%);
+}
+
+/* Legend */
+.eg-legend {
+  display: flex;
+  gap: 14px;
+  padding: 9px 15px 13px;
+  border-top: 1px solid rgb(255 255 255 / 5%);
+}
+
+.eg-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgb(255 255 255 / 45%);
+  font-family: var(--body-font-family, sans-serif);
+}
+
+/* Edge locations */
+.eg-edge-summary {
+  padding: 11px 15px;
+  font-size: 11.5px;
+  color: rgb(255 255 255 / 45%);
+  line-height: 1.6;
+  border-bottom: 1px solid rgb(255 255 255 / 5%);
+  margin: 0;
+  font-family: var(--body-font-family, sans-serif);
+}
+
+.eg-edge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 8px 15px 12px;
+}
+
+.eg-edge-grid div {
+  padding: 4px;
+  font-size: 11.5px;
+  color: rgb(255 255 255 / 65%);
+  border-bottom: 1px solid rgb(255 255 255 / 4%);
+  font-family: var(--body-font-family, sans-serif);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .eg-accordion-body,
+  .eg-accordion-icon::after,
+  .eg-tab {
+    transition: none;
   }
 }
