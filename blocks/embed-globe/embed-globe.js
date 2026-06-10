@@ -1,13 +1,15 @@
 /**
  * Embed Globe Block
  *
- * DA Table format (block name row + data rows):
- * | Embed Globe          |                         |                          |
- * | Continent Name       | Region 1\nRegion 2\n... | Edge Loc 1\nEdge Loc 2   |
+ * DA Table format — 3 columns per data row:
+ * | Continent Name | Region 1 {lat,lng}\nRegion 2 {lat,lng}\n... | Edge Loc 1\nEdge Loc 2 |
+ *
+ * Coordinates are embedded in each region name using {lat,lng} syntax.
+ * They are stripped from the display name. Missing coords fall back to
+ * the continent center defined in CONTINENT_COORDS.
  *
  * Renders a Three.js 3D interactive globe + side panel with continent tabs,
- * geographic regions accordion, and edge locations accordion — matching
- * the AWS Global Infrastructure page layout.
+ * region list (clickable → globe navigates), and edge locations accordion.
  */
 
 // ---------------------------------------------------------------------------
@@ -16,11 +18,25 @@
 
 function parseCellLines(cell) {
   if (!cell) return [];
-  // Handle both <br>-separated and newline-separated content
   return cell.innerHTML
     .split(/<br\s*\/?>/gi)
     .map((s) => s.replace(/<[^>]+>/g, '').trim())
     .filter(Boolean);
+}
+
+const COORD_PATTERN = /\{([^}]+)\}\s*$/;
+
+function parseRegion(raw) {
+  const match = raw.match(COORD_PATTERN);
+  if (match) {
+    const parts = match[1].split(',').map((s) => parseFloat(s.trim()));
+    return {
+      name: raw.replace(COORD_PATTERN, '').trim(),
+      lat: Number.isFinite(parts[0]) ? parts[0] : null,
+      lng: Number.isFinite(parts[1]) ? parts[1] : null,
+    };
+  }
+  return { name: raw, lat: null, lng: null };
 }
 
 function parseBlockData(block) {
@@ -31,16 +47,16 @@ function parseBlockData(block) {
     const cells = row.querySelectorAll(':scope > div');
     return {
       name: cells[0]?.textContent.trim() || '',
-      regions: parseCellLines(cells[1]),
+      regions: parseCellLines(cells[1]).map(parseRegion),
       edgeLocations: parseCellLines(cells[2]),
     };
   }).filter((c) => c.name);
 }
 
 // ---------------------------------------------------------------------------
-// Continent → approximate lat/lng for globe hotspot placement
+// Fallback continent centers (used when a region has no authored coordinates)
 // ---------------------------------------------------------------------------
-const COORDS = {
+const CONTINENT_COORDS = {
   'North America': { lat: 48, lng: -100 },
   'South America': { lat: -15, lng: -58 },
   Europe: { lat: 52, lng: 15 },
@@ -51,8 +67,7 @@ const COORDS = {
 };
 
 function fallbackCoords(index, total) {
-  const lng = (index / total) * 360 - 180;
-  return { lat: 20, lng };
+  return { lat: 20, lng: (index / total) * 360 - 180 };
 }
 
 function latLngToVec3(lat, lng, r) {
@@ -92,55 +107,62 @@ async function buildGlobe(container, continents, onSelect) {
   renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
-  // Lights
-  scene.add(new THREE.AmbientLight(0xffffff, 0.55));
-  const sun = new THREE.DirectionalLight(0xffffff, 1.1);
-  sun.position.set(4, 3, 5);
+  scene.add(new THREE.AmbientLight(0xffffff, 1.8));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.4);
+  sun.position.set(5, 3, 4);
   scene.add(sun);
 
-  // Globe mesh
   const geo = new THREE.SphereGeometry(R, 72, 72);
   const loader = new THREE.TextureLoader();
-
-  const mat = new THREE.MeshPhongMaterial({ color: 0x1a5f7a, shininess: 12 });
+  const mat = new THREE.MeshPhongMaterial({ color: 0xd8eeff, shininess: 6 });
   const globe = new THREE.Mesh(geo, mat);
   scene.add(globe);
 
   loader.load(
-    'https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-blue-marble.jpg',
+    'https://cdn.jsdelivr.net/npm/three-globe/example/img/earth-day.jpg',
     (tex) => { mat.map = tex; mat.needsUpdate = true; },
   );
 
-  // Atmosphere
   const atmosMat = new THREE.MeshPhongMaterial({
-    color: 0x3388cc, transparent: true, opacity: 0.07, side: THREE.FrontSide,
+    color: 0x99ccff, transparent: true, opacity: 0.05, side: THREE.FrontSide,
   });
   scene.add(new THREE.Mesh(new THREE.SphereGeometry(R * 1.025, 72, 72), atmosMat));
 
-  // Markers + rings
+  // Build a flat list of all regions with resolved coordinates
+  const allRegions = [];
+  continents.forEach((c, ci) => {
+    const fallback = CONTINENT_COORDS[c.name] || fallbackCoords(ci, continents.length);
+    c.regions.forEach((reg) => {
+      allRegions.push({
+        name: reg.name,
+        continentIdx: ci,
+        lat: reg.lat ?? fallback.lat,
+        lng: reg.lng ?? fallback.lng,
+      });
+    });
+  });
+
+  // Individual region markers
   const markerGroup = new THREE.Group();
   scene.add(markerGroup);
-
-  const mGeo = new THREE.SphereGeometry(0.055, 14, 14);
-  const rGeo = new THREE.RingGeometry(0.065, 0.095, 32);
-
+  const mGeo = new THREE.SphereGeometry(0.038, 10, 10);
+  const rGeo = new THREE.RingGeometry(0.05, 0.075, 32);
   const markers = [];
   const rings = [];
 
-  continents.forEach((c, i) => {
-    const coords = COORDS[c.name] || fallbackCoords(i, continents.length);
-    const pos = latLngToVec3(coords.lat, coords.lng, R + 0.04);
+  allRegions.forEach((reg, ri) => {
+    const pos = latLngToVec3(reg.lat, reg.lng, R + 0.035);
     const v = new THREE.Vector3(pos.x, pos.y, pos.z);
 
-    const mMat = new THREE.MeshPhongMaterial({ color: 0x8b5cf6 });
+    const mMat = new THREE.MeshPhongMaterial({ color: 0x16191f });
     const m = new THREE.Mesh(mGeo, mMat);
     m.position.copy(v);
-    m.userData.index = i;
+    m.userData.regionIdx = ri;
     markerGroup.add(m);
     markers.push(m);
 
     const rMat = new THREE.MeshBasicMaterial({
-      color: 0x8b5cf6, transparent: true, opacity: 0.55, side: THREE.DoubleSide,
+      color: 0xa000b8, transparent: true, opacity: 0, side: THREE.DoubleSide,
     });
     const ring = new THREE.Mesh(rGeo, rMat);
     ring.position.copy(v);
@@ -158,7 +180,10 @@ async function buildGlobe(container, continents, onSelect) {
     mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
     ray.setFromCamera(mouse, camera);
     const hits = ray.intersectObjects(markers);
-    if (hits.length) onSelect(hits[0].object.userData.index);
+    if (hits.length) {
+      const reg = allRegions[hits[0].object.userData.regionIdx];
+      onSelect({ regionName: reg.name, continentIdx: reg.continentIdx });
+    }
   });
 
   // Drag orbit
@@ -167,6 +192,7 @@ async function buildGlobe(container, continents, onSelect) {
   let rx = 0; let ry = 0;
   let trx = 0; let try_ = 0;
   let autoSpin = true;
+  let currentActiveIdx = -1;
 
   renderer.domElement.addEventListener('mousedown', (e) => {
     drag = true; autoSpin = false; px = e.clientX; py = e.clientY;
@@ -192,7 +218,6 @@ async function buildGlobe(container, continents, onSelect) {
     px = e.touches[0].clientX; py = e.touches[0].clientY;
   }, { passive: true });
 
-  // Resize
   new ResizeObserver(() => {
     const w = container.clientWidth; const h = container.clientHeight;
     camera.aspect = w / h; camera.updateProjectionMatrix();
@@ -201,17 +226,30 @@ async function buildGlobe(container, continents, onSelect) {
 
   let t = 0;
 
-  function setActive(idx) {
+  function setActiveRegion(regionName) {
+    autoSpin = false;
+    currentActiveIdx = allRegions.findIndex((r) => r.name === regionName);
     markers.forEach((m, i) => {
-      m.material.color.setHex(i === idx ? 0xffffff : 0x8b5cf6);
-      m.scale.setScalar(i === idx ? 1.6 : 1);
+      m.material.color.setHex(i === currentActiveIdx ? 0xa000b8 : 0x16191f);
+      m.scale.setScalar(i === currentActiveIdx ? 1.8 : 1);
     });
-    if (idx >= 0) {
-      const c = continents[idx];
-      const co = COORDS[c.name] || fallbackCoords(idx, continents.length);
-      try_ = -co.lng * (Math.PI / 180);
-      trx = co.lat * (Math.PI / 180) * 0.45;
+    if (currentActiveIdx >= 0) {
+      const reg = allRegions[currentActiveIdx];
+      try_ = -(Math.PI / 2 + reg.lng * (Math.PI / 180));
+      trx = reg.lat * (Math.PI / 180) * 0.45;
     }
+  }
+
+  function setActiveContinent(ci) {
+    autoSpin = false;
+    currentActiveIdx = -1;
+    markers.forEach((m) => {
+      m.material.color.setHex(0x16191f);
+      m.scale.setScalar(1);
+    });
+    const co = CONTINENT_COORDS[continents[ci].name] || fallbackCoords(ci, continents.length);
+    try_ = -(Math.PI / 2 + co.lng * (Math.PI / 180));
+    trx = co.lat * (Math.PI / 180) * 0.45;
   }
 
   (function animate() {
@@ -224,19 +262,36 @@ async function buildGlobe(container, continents, onSelect) {
     markerGroup.rotation.x = rx; markerGroup.rotation.y = ry;
 
     rings.forEach((ring, i) => {
-      const pulse = (Math.sin(t * 2.2 + i) + 1) / 2;
-      ring.scale.setScalar(1 + pulse * 0.35);
-      ring.material.opacity = 0.55 - pulse * 0.38;
+      if (i === currentActiveIdx) {
+        const pulse = (Math.sin(t * 2.2) + 1) / 2;
+        ring.scale.setScalar(1 + pulse * 0.4);
+        ring.material.opacity = 0.5 - pulse * 0.4;
+      } else {
+        ring.scale.setScalar(1);
+        ring.material.opacity = 0;
+      }
     });
     renderer.render(scene, camera);
   }());
 
-  return { setActive };
+  return { setActiveRegion, setActiveContinent };
 }
 
 // ---------------------------------------------------------------------------
 // Side panel
 // ---------------------------------------------------------------------------
+
+function renderTabs(tabBarEl, continents, activeIdx, onSelect) {
+  tabBarEl.innerHTML = '';
+  continents.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'eg-tab';
+    btn.textContent = c.name;
+    btn.setAttribute('aria-selected', i === activeIdx ? 'true' : 'false');
+    btn.addEventListener('click', () => onSelect(i));
+    tabBarEl.appendChild(btn);
+  });
+}
 
 function accordion(label, count, bodyEl, open) {
   const wrap = document.createElement('div');
@@ -266,40 +321,24 @@ function accordion(label, count, bodyEl, open) {
   return wrap;
 }
 
-function renderPanel(panelEl, continents, activeIdx, onSelect) {
+function renderContent(panelEl, c, selectedRegion, onRegionSelect) {
+  const scrollTop = panelEl.scrollTop;
   panelEl.innerHTML = '';
 
-  // Tabs
-  const tabBar = document.createElement('div');
-  tabBar.className = 'eg-tabs';
-  continents.forEach((c, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'eg-tab';
-    btn.textContent = c.name;
-    btn.setAttribute('aria-selected', i === activeIdx ? 'true' : 'false');
-    btn.addEventListener('click', () => onSelect(i));
-    tabBar.appendChild(btn);
-  });
-
-  // Content
-  const content = document.createElement('div');
-  content.className = 'eg-panel-content';
-
-  const c = continents[activeIdx];
-
-  // Header
   const hdr = document.createElement('div');
   hdr.className = 'eg-panel-hdr';
   hdr.innerHTML = `<span class="eg-badge">AWS Coverage Regions</span><h2 class="eg-panel-title">${c.name}</h2>`;
-  content.appendChild(hdr);
+  panelEl.appendChild(hdr);
 
-  // Regions
   const regList = document.createElement('div');
   const ul = document.createElement('ul');
   ul.className = 'eg-region-list';
-  c.regions.forEach((r) => {
+  c.regions.forEach((reg) => {
     const li = document.createElement('li');
-    li.innerHTML = `<span class="eg-dot eg-dot-on"></span><span>${r}</span>`;
+    const isSelected = reg.name === selectedRegion;
+    if (isSelected) li.setAttribute('aria-current', 'true');
+    li.innerHTML = `<span class="eg-dot eg-dot-on"></span><span>${reg.name}</span>`;
+    li.addEventListener('click', () => onRegionSelect(reg.name));
     ul.appendChild(li);
   });
   const legend = document.createElement('div');
@@ -308,9 +347,8 @@ function renderPanel(panelEl, continents, activeIdx, onSelect) {
     <span class="eg-legend-item"><span class="eg-dot eg-dot-on"></span>Available</span>
     <span class="eg-legend-item"><span class="eg-dot eg-dot-soon"></span>Coming soon</span>`;
   regList.append(ul, legend);
-  content.appendChild(accordion('Geographic Regions', c.regions.length, regList, true));
+  panelEl.appendChild(accordion('Geographic Regions', c.regions.length, regList, true));
 
-  // Edge locations
   const edgeWrap = document.createElement('div');
   const azCount = c.regions.length * 3;
   const summary = document.createElement('p');
@@ -325,9 +363,9 @@ function renderPanel(panelEl, continents, activeIdx, onSelect) {
     grid.appendChild(d);
   });
   edgeWrap.append(summary, grid);
-  content.appendChild(accordion('Edge Locations', c.edgeLocations.length, edgeWrap, false));
+  panelEl.appendChild(accordion('Edge Locations', c.edgeLocations.length, edgeWrap, false));
 
-  panelEl.append(tabBar, content);
+  requestAnimationFrame(() => { panelEl.scrollTop = scrollTop; });
 }
 
 // ---------------------------------------------------------------------------
@@ -346,6 +384,18 @@ export default async function decorate(block) {
   const wrapper = document.createElement('div');
   wrapper.className = 'eg-wrapper';
 
+  const tabBar = document.createElement('div');
+  tabBar.className = 'eg-tabs';
+
+  const bodyRow = document.createElement('div');
+  bodyRow.className = 'eg-body';
+
+  const panelCol = document.createElement('div');
+  panelCol.className = 'eg-panel-col';
+  const panelContent = document.createElement('div');
+  panelContent.className = 'eg-panel-content';
+  panelCol.appendChild(panelContent);
+
   const globeCol = document.createElement('div');
   globeCol.className = 'eg-globe-col';
   const globeContainer = document.createElement('div');
@@ -355,25 +405,41 @@ export default async function decorate(block) {
   hint.textContent = 'Drag to rotate · Click region to explore';
   globeCol.append(globeContainer, hint);
 
-  const panelCol = document.createElement('div');
-  panelCol.className = 'eg-panel-col';
-
-  wrapper.append(globeCol, panelCol);
+  bodyRow.append(panelCol, globeCol);
+  wrapper.append(tabBar, bodyRow);
   block.appendChild(wrapper);
 
   let activeIdx = 0;
+  let activeRegion = null;
   let globeCtrl = null;
 
-  function selectContinent(idx) {
-    activeIdx = idx;
-    if (globeCtrl) globeCtrl.setActive(idx);
-    renderPanel(panelCol, continents, idx, selectContinent);
+  function handleRegionSelect(regionName) {
+    activeRegion = regionName;
+    if (globeCtrl) globeCtrl.setActiveRegion(regionName);
+    renderContent(panelContent, continents[activeIdx], regionName, handleRegionSelect);
   }
 
-  // Init panel immediately, globe after paint
-  renderPanel(panelCol, continents, activeIdx, selectContinent);
+  function handleTabSelect(idx) {
+    activeIdx = idx;
+    activeRegion = null;
+    if (globeCtrl) globeCtrl.setActiveContinent(idx);
+    renderTabs(tabBar, continents, idx, handleTabSelect);
+    renderContent(panelContent, continents[idx], null, handleRegionSelect);
+  }
+
+  function handleGlobeSelect({ regionName, continentIdx }) {
+    if (continentIdx !== activeIdx) {
+      activeIdx = continentIdx;
+      renderTabs(tabBar, continents, activeIdx, handleTabSelect);
+    }
+    handleRegionSelect(regionName);
+  }
+
+  renderTabs(tabBar, continents, activeIdx, handleTabSelect);
+  renderContent(panelContent, continents[activeIdx], activeRegion, handleRegionSelect);
+
   requestAnimationFrame(async () => {
-    globeCtrl = await buildGlobe(globeContainer, continents, selectContinent);
-    globeCtrl.setActive(0);
+    globeCtrl = await buildGlobe(globeContainer, continents, handleGlobeSelect);
+    globeCtrl.setActiveContinent(0);
   });
 }
