@@ -24,19 +24,23 @@ function parseCellLines(cell) {
     .filter(Boolean);
 }
 
+const COMING_SOON_RE = /\s*coming\s+soon\s*$/i;
 const COORD_PATTERN = /\{([^}]+)\}\s*$/;
 
 function parseRegion(raw) {
-  const match = raw.match(COORD_PATTERN);
+  const comingSoon = COMING_SOON_RE.test(raw);
+  const str = raw.replace(COMING_SOON_RE, '').trim();
+  const match = str.match(COORD_PATTERN);
   if (match) {
     const parts = match[1].split(',').map((s) => parseFloat(s.trim()));
     return {
-      name: raw.replace(COORD_PATTERN, '').trim(),
+      name: str.replace(COORD_PATTERN, '').trim(),
       lat: Number.isFinite(parts[0]) ? parts[0] : null,
       lng: Number.isFinite(parts[1]) ? parts[1] : null,
+      comingSoon,
     };
   }
-  return { name: raw, lat: null, lng: null };
+  return { name: str, lat: null, lng: null, comingSoon };
 }
 
 function parseBlockData(block) {
@@ -141,6 +145,7 @@ async function buildGlobe(container, continents, onSelect) {
         continentIdx: ci,
         lat: reg.lat ?? fallback.lat,
         lng: reg.lng ?? fallback.lng,
+        comingSoon: reg.comingSoon || false,
       });
     });
   });
@@ -150,9 +155,10 @@ async function buildGlobe(container, continents, onSelect) {
   const PIN_TAIL_H = 0.10;
   const PIN_TAIL_R = 0.010;
   const PIN_HEAD_Y = PIN_TAIL_H;
-  const COLOR_HEAD = 0x22c55e;   // green
-  const COLOR_TAIL = 0x111111;   // black
-  const COLOR_ACTIVE = 0xa000b8; // purple (selected head)
+  const COLOR_HEAD = 0x22c55e;        // green (available)
+  const COLOR_HEAD_SOON = 0x8aab99;  // grey-green (coming soon)
+  const COLOR_TAIL = 0x111111;       // black
+  const COLOR_ACTIVE = 0xa000b8;     // purple (selected head)
 
   const markerGroup = new THREE.Group();
   scene.add(markerGroup);
@@ -175,7 +181,9 @@ async function buildGlobe(container, continents, onSelect) {
     // Orient pin so local Y+ points radially outward from globe centre
     pin.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), v.clone().normalize());
 
-    const headMat = new THREE.MeshPhongMaterial({ color: COLOR_HEAD, shininess: 60 });
+    const headMat = reg.comingSoon
+      ? new THREE.MeshPhongMaterial({ color: COLOR_HEAD_SOON, shininess: 60 })
+      : new THREE.MeshPhongMaterial({ color: COLOR_HEAD, shininess: 60 });
     const tailMat = new THREE.MeshPhongMaterial({ color: COLOR_TAIL, shininess: 10 });
     pinMats.push(headMat);
 
@@ -266,7 +274,8 @@ async function buildGlobe(container, continents, onSelect) {
     trz = REGION_Z;
     currentActiveIdx = allRegions.findIndex((r) => r.name === regionName);
     pinMats.forEach((mat, i) => {
-      mat.color.setHex(i === currentActiveIdx ? COLOR_ACTIVE : COLOR_HEAD);
+       
+      mat.color.setHex(i === currentActiveIdx ? COLOR_ACTIVE : (allRegions[i].comingSoon ? COLOR_HEAD_SOON : COLOR_HEAD));
     });
     pinGroups.forEach((pg, i) => {
       pg.scale.setScalar(i === currentActiveIdx ? 1.35 : 1);
@@ -282,7 +291,7 @@ async function buildGlobe(container, continents, onSelect) {
     autoSpin = false;
     trz = DEFAULT_Z;
     currentActiveIdx = -1;
-    pinMats.forEach((mat) => { mat.color.setHex(COLOR_HEAD); });
+    pinMats.forEach((mat, i) => { mat.color.setHex(allRegions[i].comingSoon ? COLOR_HEAD_SOON : COLOR_HEAD); });
     pinGroups.forEach((pg) => { pg.scale.setScalar(1); });
     const co = CONTINENT_COORDS[continents[ci].name] || fallbackCoords(ci, continents.length);
     try_ = -(Math.PI / 2 + co.lng * (Math.PI / 180));
@@ -382,7 +391,8 @@ function renderContent(panelEl, c, selectedRegion, onRegionSelect) {
     const li = document.createElement('li');
     const isSelected = reg.name === selectedRegion;
     if (isSelected) li.setAttribute('aria-current', 'true');
-    li.innerHTML = `<span class="eg-dot eg-dot-on"></span><span>${reg.name}</span>`;
+    const dotClass = reg.comingSoon ? 'eg-dot-soon' : 'eg-dot-on';
+    li.innerHTML = `<span class="eg-dot ${dotClass}"></span><span>${reg.name}</span>`;
     li.addEventListener('click', () => onRegionSelect(reg.name));
     ul.appendChild(li);
   });
