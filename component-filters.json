@@ -76,6 +76,12 @@
     ]
   },
   {
+    "id": "embed-globe",
+    "components": [
+      "embed-globe-item"
+    ]
+  },
+  {
     "id": "faq",
     "components": [
       "faq-item"

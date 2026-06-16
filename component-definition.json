@@ -281,31 +281,36 @@
           "title": "Globe",
           "id": "embed-globe",
           "model": "embed-globe",
+          "filter": "embed-globe",
           "plugins": {
             "da": {
               "name": "embed-globe",
               "rows": 1,
-              "columns": 1,
+              "columns": 3
+            }
+          }
+        },
+        {
+          "title": "Globe Continent",
+          "id": "embed-globe-item",
+          "model": "embed-globe-item",
+          "plugins": {
+            "da": {
+              "name": "embed-globe-item",
+              "rows": 1,
+              "columns": 3,
               "fields": [
                 {
-                  "name": "heading",
-                  "selector": "div>div>h2"
-                },
-                {
-                  "name": "subtitle",
-                  "selector": "div>div>h5"
+                  "name": "name",
+                  "selector": "div:nth-child(1)"
                 },
                 {
                   "name": "regions",
-                  "selector": "div>div>p:nth-child(3)"
+                  "selector": "div:nth-child(2)"
                 },
                 {
-                  "name": "linkText",
-                  "selector": "div>div>p:last-child>a"
-                },
-                {
-                  "name": "linkUrl",
-                  "selector": "div>div>p:last-child>a[href]"
+                  "name": "edgeLocations",
+                  "selector": "div:nth-child(3)"
                 }
               ]
             }
