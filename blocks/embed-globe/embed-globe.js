@@ -44,7 +44,7 @@ function parseRegion(raw) {
 }
 
 function parseBlockData(block) {
-  const rows = [...block.querySelectorAll(':scope > div')].filter(
+  const rows = [...block.querySelectorAll(':scope > div:not(.eg-wrapper)')].filter(
     (r) => r.querySelectorAll(':scope > div').length >= 2,
   );
   return rows.map((row) => {
@@ -434,7 +434,8 @@ export default async function decorate(block) {
     return;
   }
 
-  block.innerHTML = '';
+  // Hide source rows rather than removing them — preserves data-aue-* attributes for Universal Editor
+  [...block.children].forEach((child) => { child.hidden = true; });
 
   const wrapper = document.createElement('div');
   wrapper.className = 'eg-wrapper';
