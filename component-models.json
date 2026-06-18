@@ -338,7 +338,7 @@
         "valueType": "string",
         "name": "regions",
         "label": "Regions",
-        "description": "One region per line. Append coordinates as {lat,lng} and 'coming soon' for upcoming regions. Example: US East (N. Virginia) {38.9,-77.0}"
+        "description": "One region per line. Append coordinates as {lat,lng} and optionally 'coming soon'. Example: US East (N. Virginia) {38.9,-77.0}"
       },
       {
         "component": "richtext",
